@@ -9,4 +9,5 @@
     <string name="date_and_time">Date and Time</string>
     <string name="gym_name">Gym Name</string>
     <string name="previous_bookings">Previous Bookings</string>
+    <string name="summary_page">summary page</string>
 </resources>
