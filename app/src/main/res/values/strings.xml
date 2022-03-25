@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">USCRecApp</string>
+    <string name="userphoto">userPhoto</string>
+    <string name="student_name">Student Name</string>
+    <string name="_12345678">12345678</string>
+    <string name="cancel">Cancel</string>
+    <string name="upcoming_bookings">Upcoming Bookings</string>
+    <string name="date_and_time">Date and Time</string>
+    <string name="gym_name">Gym Name</string>
+    <string name="previous_bookings">Previous Bookings</string>
 </resources>
