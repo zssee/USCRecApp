@@ -14,5 +14,6 @@ public class MainActivity extends AppCompatActivity {
 
         Intent gym = new Intent(this, gymSlots.class);
         startActivity(gym);
+
     }
 }
