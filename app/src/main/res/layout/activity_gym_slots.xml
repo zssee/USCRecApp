@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".gymSlots">
+
+    <ImageView
+        android:id="@+id/gymPic"
+        android:layout_width="413dp"
+        android:layout_height="187dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/lyon_gym" />
+
+    <TextView
+        android:id="@+id/gymTitle"
+        android:layout_width="231dp"
+        android:layout_height="73dp"
+        android:layout_marginStart="92dp"
+        android:layout_marginTop="65dp"
+        android:layout_marginEnd="96dp"
+        android:layout_marginBottom="72dp"
+        android:background="#513B3F41"
+        android:text="Lyon Gym"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="#F8F5F5"
+        android:textSize="50dp"
+        app:layout_constraintBottom_toBottomOf="@+id/gymPic"
+        app:layout_constraintEnd_toEndOf="@+id/gymPic"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/gymPic"
+        app:layout_constraintTop_toTopOf="@+id/gymPic"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="407dp"
+        android:layout_height="428dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="116dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/timeText"
+                    android:layout_width="match_parent"
+                    android:layout_height="47dp"
+                    android:gravity="center"
+                    android:text="8:00-9:00am"
+                    android:textSize="17dp" />
+
+                <TextView
+                    android:id="@+id/capText"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:gravity="center"
+                    android:text="Capacity:"
+                    android:textSize="17dp" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/time"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:scaleX="0.7"
+                android:scaleY=".7"
+                android:text="Button" />
+
+            <Button
+                android:id="@+id/cap"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:scaleX="0.7"
+                android:scaleY="0.7"
+                android:text="Button" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="85dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/timeText2"
+                    android:layout_width="match_parent"
+                    android:layout_height="47dp"
+                    android:gravity="center"
+                    android:text="8:00-9:00am"
+                    android:textSize="17dp" />
+
+                <TextView
+                    android:id="@+id/capText2"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:gravity="center"
+                    android:text="Capacity:"
+                    android:textSize="17dp" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/time2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:scaleX="0.7"
+                android:scaleY=".7"
+                android:text="Button" />
+
+            <Button
+                android:id="@+id/cap2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:scaleX="0.7"
+                android:scaleY="0.7"
+                android:text="Button" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
