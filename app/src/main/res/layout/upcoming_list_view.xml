@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="227dp"
+            android:layout_height="65dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/gymName"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="10sp"
+                android:text="@string/gym_name"
+                android:textColor="#040404"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/dateAndTime"
+                android:layout_width="match_parent"
+                android:layout_height="31dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="10sp"
+                android:text="@string/date_and_time"
+                android:textColor="#000000" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="151dp"
+            android:layout_height="65dp"
+            android:layout_weight="1"
+            android:background="#AF0500"
+            android:backgroundTint="#AF0500"
+            android:scaleX="0.60"
+            android:scaleY="0.60"
+            android:text="@string/cancel"/>
+    </LinearLayout>
+
+</LinearLayout>

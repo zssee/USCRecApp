@@ -59,8 +59,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider" />
 
-    <ScrollView
-        android:id="@+id/scrollView2"
+    <ListView
+        android:id="@+id/upcomingList"
         android:layout_width="372dp"
         android:layout_height="155dp"
         android:layout_marginStart="21dp"
@@ -70,58 +70,59 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/upcomingTitle">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+<!--        <LinearLayout-->
+<!--            android:id="@+id/upcomingRow"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical">-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:orientation="horizontal">-->
 
-                <LinearLayout
-                    android:layout_width="227dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+<!--                <LinearLayout-->
+<!--                    android:layout_width="227dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:orientation="vertical">-->
 
-                    <TextView
-                        android:id="@+id/gymName"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="10sp"
-                        android:text="@string/gym_name"
-                        android:textColor="#040404"
-                        android:textSize="17sp" />
+<!--                    <TextView-->
+<!--                        android:id="@+id/gymName"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="32dp"-->
+<!--                        android:gravity="center_vertical"-->
+<!--                        android:paddingLeft="10sp"-->
+<!--                        android:text="@string/gym_name"-->
+<!--                        android:textColor="#040404"-->
+<!--                        android:textSize="17sp" />-->
 
-                    <TextView
-                        android:id="@+id/dateAndTime"
-                        android:layout_width="match_parent"
-                        android:layout_height="31dp"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="10sp"
-                        android:text="@string/date_and_time"
-                        android:textColor="#000000" />
+<!--                    <TextView-->
+<!--                        android:id="@+id/dateAndTime"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="31dp"-->
+<!--                        android:gravity="center_vertical"-->
+<!--                        android:paddingLeft="10sp"-->
+<!--                        android:text="@string/date_and_time"-->
+<!--                        android:textColor="#000000" />-->
 
-                </LinearLayout>
+<!--                </LinearLayout>-->
 
-                <Button
-                    android:id="@+id/cancelButton"
-                    android:layout_width="151dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="#AF0500"
-                    android:backgroundTint="#AF0500"
-                    android:scaleX="0.60"
-                    android:scaleY="0.60"
-                    android:text="@string/cancel"
-                    tools:ignore="TouchTargetSizeCheck" />
-            </LinearLayout>
+<!--                <Button-->
+<!--                    android:id="@+id/cancelButton"-->
+<!--                    android:layout_width="151dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:background="#AF0500"-->
+<!--                    android:backgroundTint="#AF0500"-->
+<!--                    android:scaleX="0.60"-->
+<!--                    android:scaleY="0.60"-->
+<!--                    android:text="@string/cancel"-->
+<!--                    tools:ignore="TouchTargetSizeCheck" />-->
+<!--            </LinearLayout>-->
 
-        </LinearLayout>
-    </ScrollView>
+<!--        </LinearLayout>-->
+    </ListView>
 
     <ScrollView
         android:layout_width="372dp"
@@ -193,7 +194,7 @@
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
+        app:layout_constraintTop_toBottomOf="@+id/upcomingList" />
 
     <TextView
         android:id="@+id/myimage"

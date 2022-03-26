@@ -4,9 +4,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.ScrollView;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +27,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -37,6 +45,10 @@ public class SummaryPage extends AppCompatActivity {
         TextView studentID = findViewById(R.id.studentID);
         TextView gymName = findViewById(R.id.gymName);
         TextView dateAndTime = findViewById((R.id.dateAndTime));
+        Button cancelBtn = findViewById(R.id.cancelButton);
+        ListView upcomingBookings = findViewById((R.id.upcomingList));
+
+
 
 
         // initialize db
@@ -54,33 +66,89 @@ public class SummaryPage extends AppCompatActivity {
                         Map<String, Object> map = (Map<String, Object>) document.getData();
                         String name = (String) map.get("name");
                         String id = (String) map.get("id");
-                        List<String> group = (List<String>) document.get("reservations");
+                        ArrayList<String> group = (ArrayList<String>) document.get("reservations");
                         studentName.setText(name);
                         studentID.setText(id);
 
+                        Log.d(TAG, "success " + group.get(0) + " " + group.get(1) + " " + group.get(2));
+                        BookingAdapter adapter = new BookingAdapter(getApplicationContext(), R.layout.upcoming_list_view, group);
+                        ListView listView = (ListView) findViewById(R.id.upcomingList);
+                        listView.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
                         // display timeslot data
                         // if multiple timeslots, create for loop and iterate through group list
-                        db.collection("timeslots").whereEqualTo("slot", group.get(0))
-                                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    Log.d(TAG, "success " + task.getResult().size());
+//                        for(int i = 0; i < group.size(); i++){
 
-                                    for (QueryDocumentSnapshot docu : task.getResult()) {
-                                        Log.d(TAG, docu.getId() + " => " + docu.getData());
-                                        Map<String, Object> map = docu.getData();
-                                        String gym = (String) map.get("gymName");
-                                        String day = (String) map.get("day");
-                                        String time = (String) map.get("time");
-                                        gymName.setText(gym);
-                                        dateAndTime.setText(day + " " + time);
-                                    }
-                                } else {
-                                    Log.d(TAG, "Error getting documents: ", task.getException());
-                                }
-                            }
-                        });
+//                            // dynamically create new rows (vert)
+//                            LinearLayout parent = new LinearLayout(SummaryPage.this);
+//                            parent.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+//                            parent.setOrientation(LinearLayout.VERTICAL);
+//
+//                            //children of parent linearlayout (horizontal)
+//                            LinearLayout row = new LinearLayout(SummaryPage.this);
+//                            row.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+//                            row.setOrientation(LinearLayout.HORIZONTAL);
+//                            parent.addView(row);
+//
+//                            // linearlayout (vertical)
+//                            LinearLayout vertText = new LinearLayout(SummaryPage.this);
+//                            vertText.setLayoutParams(new LinearLayout.LayoutParams(227, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f));                            vertText.setOrientation(LinearLayout.VERTICAL);
+//                            row.addView(vertText);
+//
+//                            // text views on left of row
+//                            TextView gymName = new TextView(SummaryPage.this);
+//                            TableRow.LayoutParams params1 = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, 32);
+//                            gymName.setGravity(Gravity.CENTER_VERTICAL);
+//                            gymName.setPadding(10, 0, 0, 0);
+//                            gymName.setTextColor(getResources().getColor(android.R.color.black));
+//                            gymName.setTextSize(17);
+//                            gymName.setLayoutParams(params1);
+//
+//                            TextView dateAndTime = new TextView(SummaryPage.this);
+//                            TableRow.LayoutParams params2 = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, 31);
+//                            dateAndTime.setGravity(Gravity.CENTER_VERTICAL);
+//                            dateAndTime.setPadding(10, 0, 0, 0);
+//                            dateAndTime.setTextColor(getResources().getColor(android.R.color.black));
+//                            dateAndTime.setTextSize(15);
+//                            dateAndTime.setLayoutParams(params2);
+//
+//                            vertText.addView(gymName);
+//                            vertText.addView(dateAndTime);
+//
+//                            // button on right of row
+//                            Button cancelBtn = new Button(SummaryPage.this);
+//                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(151,
+//                                    LinearLayout.LayoutParams.MATCH_PARENT, 1.0f);
+//                            cancelBtn.setLayoutParams(params);
+//                            cancelBtn.setScaleX(0.6f);
+//                            cancelBtn.setScaleY(0.6f);
+//
+//                            row.addView(cancelBtn);
+
+
+//                            db.collection("timeslots").whereEqualTo("slot", group.get(i))
+//                                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                                @Override
+//                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                                    if (task.isSuccessful()) {
+//                                        Log.d(TAG, "success " + task.getResult().size());
+//
+//                                        for (QueryDocumentSnapshot docu : task.getResult()) {
+//                                            Log.d(TAG, docu.getId() + " => " + docu.getData());
+//                                            Map<String, Object> map = docu.getData();
+//                                            String gym = (String) map.get("gymName");
+//                                            String day = (String) map.get("day");
+//                                            String time = (String) map.get("time");
+//                                            gymName.setText(gym);
+//                                            dateAndTime.setText(day + " " + time);
+//                                        }
+//                                    } else {
+//                                        Log.d(TAG, "Error getting documents: ", task.getException());
+//                                    }
+//                                }
+//                            });
+//                        }
+
 
 
 
