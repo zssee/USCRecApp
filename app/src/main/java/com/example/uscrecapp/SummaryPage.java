@@ -21,19 +21,27 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Date;
 
 public class SummaryPage extends AppCompatActivity {
     private static final String TAG = "SummaryPage";
-
+    private Calendar cal = Calendar.getInstance();
+    private Date currTime = new Date();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +65,68 @@ public class SummaryPage extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+
+
+                        // populate user info
                         Map<String, Object> map = (Map<String, Object>) document.getData();
                         String name = (String) map.get("name");
                         String id = (String) map.get("id");
                         ArrayList<String> group = (ArrayList<String>) document.get("reservations");
                         studentName.setText(name);
                         studentID.setText(id);
+
+
+                        // if group.size() > 0, check if the timestamps for each of the bookings
+                        // have passed yet
+                        if(group.size() > 0){
+
+                            Log.d(TAG, "starting timestamp comparison...");
+                            // iterate through each time stamp and compare to current time
+                            for(int i = 0; i < group.size(); i++){
+                                int finalI = i;
+                                db.collection("timeslots").whereEqualTo("slot", group.get(i))
+                                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            Log.d(TAG, "success " + task.getResult().size());
+
+                                            for (QueryDocumentSnapshot docu : task.getResult()) {
+                                                Log.d(TAG, docu.getId() + " =>! " + docu.getData());
+                                                Map<String, Object> map = docu.getData();
+                                                Timestamp gymTime = (Timestamp) map.get("timestamp");
+                                                Date gymDate = gymTime.toDate();
+                                                Long gTime = gymDate.getTime();
+                                                Long now = currTime.getTime();
+
+                                                // if timestamp has passed add to previous bookings array
+                                                if(currTime.after(gymDate)){
+                                                    Log.d(TAG, "passed gym booking");
+
+                                                    // add booking to map.get("previous")
+                                                    db.collection("users").document("syuenSee")
+                                                            .update("previous", FieldValue.arrayUnion(group.get(finalI)));
+
+                                                    // delete booking from document.get("reservations")
+                                                    db.collection("users").document("syuenSee")
+                                                            .update("reservations", FieldValue.arrayRemove(group.get(finalI)));
+//
+                                                }
+
+                                                Log.d(TAG, "ITERATION " + finalI + " " + docu.getId() + " --> " + document.getData());
+                                            }
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                            }
+                        }
+
+
+
+                        // display previous bookings via adapter
+
 
                         // display scrolling view of upcoming bookings
                         Log.d(TAG, "success " + group.get(0) + " " + group.get(1) + " " + group.get(2));
