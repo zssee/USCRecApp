@@ -43,10 +43,8 @@ public class BookingAdapter extends ArrayAdapter<String> {
 
        TextView gymName = convertView.findViewById(R.id.gymName);
        TextView dateAndTime = convertView.findViewById(R.id.dateAndTime);
-       Button cancelBtn = convertView.findViewById(R.id.cancelButton);
 
        // set gym name and day/time
-
         db.collection("timeslots").whereEqualTo("slot", bookings.get(position))
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override

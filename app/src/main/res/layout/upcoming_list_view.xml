@@ -45,7 +45,9 @@
             android:backgroundTint="#AF0500"
             android:scaleX="0.60"
             android:scaleY="0.60"
-            android:text="@string/cancel"/>
+            android:text="@string/cancel"
+            android:textColor="#FFFFFF"
+            android:textSize="17sp" />
     </LinearLayout>
 
 </LinearLayout>
