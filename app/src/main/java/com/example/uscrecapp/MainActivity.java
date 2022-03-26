@@ -18,21 +18,6 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNav);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener(){
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item){
-                switch(item.getItemId()){
-                    case R.id.person:
-
-                        break;
-                    case R.id.home:
-                        break;
-                }
-                return false;
-            }
-        });
-
         Button button = findViewById(R.id.summaryNav);
         button.setOnClickListener(new View.OnClickListener() {
 
