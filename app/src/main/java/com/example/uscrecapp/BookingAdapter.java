@@ -77,7 +77,7 @@ public class BookingAdapter extends ArrayAdapter<String> {
                         .update("reservations", FieldValue.arrayRemove(bookings.get(position)));
 
                 // check capacity of time slot
-                // if time slot capacity == 0, notify waitlist
+                // if time slot capacity == 0, notify waitlist for that slot
                 // increment time slot capacity by 1
 
                 // update UI

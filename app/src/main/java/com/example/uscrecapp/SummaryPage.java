@@ -239,7 +239,7 @@ public class SummaryPage extends AppCompatActivity {
             case "elle":
                 return R.drawable.temp;
             case "kelly":
-                return R.drawable.temp;
+                return R.drawable.student;
         }
         return 0;
     }
