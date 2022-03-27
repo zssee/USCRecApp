@@ -124,21 +124,21 @@ public class SummaryPage extends AppCompatActivity {
                         }
 
 
-                        // display scrolling view of upcoming bookings
-                        ArrayList<String> updatedRes = (ArrayList<String>) document.get("reservations");
-                        Log.d(TAG, "updatedRes size: " + updatedRes.size());
-                        BookingAdapter adapter = new BookingAdapter(getApplicationContext(), R.layout.upcoming_list_view, updatedRes);
-                        ListView listView = (ListView) findViewById(R.id.upcomingList);
-                        listView.setAdapter(adapter);
-                        adapter.notifyDataSetChanged();
-
-                        // display previous bookings via adapter
-                        ArrayList<String> updatedPrev = (ArrayList<String>) document.get("previous");
-                        Log.d(TAG, "updatedPrev size: " + updatedPrev.size());
-                        PreviousAdapter adapter2 = new PreviousAdapter(getApplicationContext(), R.layout.prev_list_view, updatedPrev);
-                        ListView listView2 = (ListView) findViewById(R.id.previousList);
-                        listView2.setAdapter(adapter2);
-                        adapter.notifyDataSetChanged();
+//                        // display scrolling view of upcoming bookings
+//                        ArrayList<String> updatedRes = (ArrayList<String>) document.get("reservations");
+//                        Log.d(TAG, "updatedRes size: " + updatedRes.size());
+//                        BookingAdapter adapter = new BookingAdapter(getApplicationContext(), R.layout.upcoming_list_view, updatedRes);
+//                        ListView listView = (ListView) findViewById(R.id.upcomingList);
+//                        listView.setAdapter(adapter);
+//                        adapter.notifyDataSetChanged();
+//
+//                        // display previous bookings via adapter
+//                        ArrayList<String> updatedPrev = (ArrayList<String>) document.get("previous");
+//                        Log.d(TAG, "updatedPrev size: " + updatedPrev.size());
+//                        PreviousAdapter adapter2 = new PreviousAdapter(getApplicationContext(), R.layout.prev_list_view, updatedPrev);
+//                        ListView listView2 = (ListView) findViewById(R.id.previousList);
+//                        listView2.setAdapter(adapter2);
+//                        adapter2.notifyDataSetChanged();
 
                     } else {
                         Toast.makeText(SummaryPage.this, "No such document",
@@ -151,6 +151,7 @@ public class SummaryPage extends AppCompatActivity {
             }
         });
 
+        displayBookings();
 
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNav);
@@ -169,6 +170,48 @@ public class SummaryPage extends AppCompatActivity {
                         break;
                 }
                 return false;
+            }
+        });
+    }
+
+    public void displayBookings(){
+        // initialize db
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // retrieve contents from document
+        DocumentReference newRef = db.collection("users").document("syuenSee");
+        newRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+
+                        // display scrolling view of upcoming bookings
+                        ArrayList<String> updatedRes = (ArrayList<String>) document.get("reservations");
+                        Log.d(TAG, "updatedRes size: " + updatedRes.size());
+                        BookingAdapter adapter = new BookingAdapter(getApplicationContext(), R.layout.upcoming_list_view, updatedRes);
+                        ListView listView = (ListView) findViewById(R.id.upcomingList);
+                        listView.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+
+                        // display previous bookings via adapter
+                        ArrayList<String> updatedPrev = (ArrayList<String>) document.get("previous");
+                        Log.d(TAG, "updatedPrev size: " + updatedPrev.size());
+                        PreviousAdapter adapter2 = new PreviousAdapter(getApplicationContext(), R.layout.prev_list_view, updatedPrev);
+                        ListView listView2 = (ListView) findViewById(R.id.previousList);
+                        listView2.setAdapter(adapter2);
+                        adapter2.notifyDataSetChanged();
+
+                    } else {
+                        Toast.makeText(SummaryPage.this, "No such document",
+                                Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(SummaryPage.this, "get failed",
+                            Toast.LENGTH_LONG).show();
+                }
             }
         });
     }

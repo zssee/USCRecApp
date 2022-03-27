@@ -37,14 +37,14 @@ public class BookingAdapter extends ArrayAdapter<String> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         Log.d(TAG, String.valueOf(position));
         int phraseIndex = position;
-       if(convertView == null){
-           convertView = LayoutInflater.from(getContext()).inflate(R.layout.upcoming_list_view, parent, false);
-       }
+        if(convertView == null){
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.upcoming_list_view, parent, false);
+        }
 
-       TextView gymName = convertView.findViewById(R.id.gymName);
-       TextView dateAndTime = convertView.findViewById(R.id.dateAndTime);
+        TextView gymName = convertView.findViewById(R.id.gymName);
+        TextView dateAndTime = convertView.findViewById(R.id.dateAndTime);
 
-       // set gym name and day/time
+        // set gym name and day/time
         db.collection("timeslots").whereEqualTo("slot", bookings.get(position))
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
