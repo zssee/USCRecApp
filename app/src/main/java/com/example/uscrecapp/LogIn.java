@@ -54,7 +54,9 @@ public class LogIn extends AppCompatActivity {
 
                                 if(task.getResult().size() != 0){
                                     // let user login
+                                    String msg = username;
                                     Intent sumNav = new Intent(view.getContext(), SummaryPage.class);
+                                    sumNav.putExtra("msg", msg);
                                     startActivity(sumNav);
                                 }
                                 else{

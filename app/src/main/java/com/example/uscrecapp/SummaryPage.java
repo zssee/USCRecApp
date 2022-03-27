@@ -48,17 +48,32 @@ public class SummaryPage extends AppCompatActivity {
     private static final String TAG = "SummaryPage";
     private Calendar cal = Calendar.getInstance();
     private Date currTime = new Date();
+    public String docName = "syuenSee";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_summary_page);
 
+
+
         Intent intent = getIntent();
         String message = intent.getStringExtra("msg");
         if(message == "display booking"){
             displayBookings();
+        }else{
+            // passed a user name
+            // find documentPath
+            docName = toCamelCase(message);
+            Log.d(TAG, "docName: " + docName);
         }
+
+
+
+
+
+
+
 
         // make variables
         TextView studentName = findViewById(R.id.studentName);
@@ -70,7 +85,8 @@ public class SummaryPage extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         // retrieve contents from document
-        DocumentReference docRef = db.collection("users").document("syuenSee");
+        DocumentReference docRef = db.collection("users").document(docName);
+        String finalDocName = docName;
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -123,11 +139,11 @@ public class SummaryPage extends AppCompatActivity {
                                                     Log.d(TAG, "passed gym booking");
 
                                                     // add booking to map.get("previous")
-                                                    db.collection("users").document("syuenSee")
+                                                    db.collection("users").document(finalDocName)
                                                             .update("previous", FieldValue.arrayUnion(group.get(finalI)));
 
                                                     // delete booking from document.get("reservations")
-                                                    db.collection("users").document("syuenSee")
+                                                    db.collection("users").document(finalDocName)
                                                             .update("reservations", FieldValue.arrayRemove(group.get(finalI)));
 //
                                                 }
@@ -180,7 +196,7 @@ public class SummaryPage extends AppCompatActivity {
 
     public void displayBookings(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        final DocumentReference newDocRef = db.collection("users").document("syuenSee");
+        final DocumentReference newDocRef = db.collection("users").document(docName);
         newDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot snapshot,
@@ -227,5 +243,26 @@ public class SummaryPage extends AppCompatActivity {
         }
         return 0;
     }
+
+    private static String toCamelCase(String s){
+        String[] parts = s.split(" ");
+        String camelCaseString = "";
+        int counter = 0;
+        for (String part : parts){
+            camelCaseString = camelCaseString + toProperCase(part, counter);
+            counter++;
+        }
+        return camelCaseString;
+    }
+
+    private static String toProperCase(String s, int count) {
+        if(count == 0){
+            return s.toLowerCase();
+        }
+
+        return s.substring(0, 1).toUpperCase() +
+                s.substring(1).toLowerCase();
+    }
+
 }
 
