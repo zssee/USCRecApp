@@ -76,6 +76,11 @@ public class BookingAdapter extends ArrayAdapter<String> {
                 db.collection("users").document("syuenSee")
                         .update("reservations", FieldValue.arrayRemove(bookings.get(position)));
 
+                // check capacity of time slot
+                // if time slot capacity == 0, notify waitlist
+                // increment time slot capacity by 1
+
+                // update UI
                 String msg = "display booking";
                 Intent i = new Intent(view.getContext(), SummaryPage.class);
                 i.putExtra("msg", msg);

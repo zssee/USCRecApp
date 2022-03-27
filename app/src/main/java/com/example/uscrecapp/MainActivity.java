@@ -18,29 +18,32 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button button = findViewById(R.id.summaryNav);
-        button.setOnClickListener(new View.OnClickListener() {
+        Intent toLogIn = new Intent(this, LogIn.class);
+        startActivity(toLogIn);
 
-            @Override
-            public void onClick(View view) {
-
-                Intent sumNav = new Intent(view.getContext(), SummaryPage.class);
-                startActivity(sumNav);
-
-            }
-        });
-
-        Button button2 = findViewById(R.id.gymNav);
-        button2.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-
-                Intent gymNav = new Intent(view.getContext(), gymSlots.class);
-                startActivity(gymNav);
-
-            }
-        });
+//        Button button = findViewById(R.id.summaryNav);
+//        button.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View view) {
+//
+//                Intent sumNav = new Intent(view.getContext(), SummaryPage.class);
+//                startActivity(sumNav);
+//
+//            }
+//        });
+//
+//        Button button2 = findViewById(R.id.gymNav);
+//        button2.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View view) {
+//
+//                Intent gymNav = new Intent(view.getContext(), gymSlots.class);
+//                startActivity(gymNav);
+//
+//            }
+//        });
 
     }
 
