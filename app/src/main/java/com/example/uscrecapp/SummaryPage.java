@@ -1,6 +1,7 @@
 package com.example.uscrecapp;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -24,8 +25,10 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
@@ -115,6 +118,7 @@ public class SummaryPage extends AppCompatActivity {
 
                                                 Log.d(TAG, "ITERATION " + finalI + " " + docu.getId() + " --> " + document.getData());
                                             }
+
                                         } else {
                                             Log.d(TAG, "Error getting documents: ", task.getException());
                                         }
@@ -123,22 +127,38 @@ public class SummaryPage extends AppCompatActivity {
                             }
                         }
 
-
-//                        // display scrolling view of upcoming bookings
-//                        ArrayList<String> updatedRes = (ArrayList<String>) document.get("reservations");
-//                        Log.d(TAG, "updatedRes size: " + updatedRes.size());
-//                        BookingAdapter adapter = new BookingAdapter(getApplicationContext(), R.layout.upcoming_list_view, updatedRes);
-//                        ListView listView = (ListView) findViewById(R.id.upcomingList);
-//                        listView.setAdapter(adapter);
-//                        adapter.notifyDataSetChanged();
+//                        final DocumentReference newDocRef = db.collection("users").document("syuenSee");
+//                        newDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+//                            @Override
+//                            public void onEvent(@Nullable DocumentSnapshot snapshot,
+//                                                @Nullable FirebaseFirestoreException e) {
+//                                if (e != null) {
+//                                    Log.w(TAG, "Listen failed.", e);
+//                                    return;
+//                                }
 //
-//                        // display previous bookings via adapter
-//                        ArrayList<String> updatedPrev = (ArrayList<String>) document.get("previous");
-//                        Log.d(TAG, "updatedPrev size: " + updatedPrev.size());
-//                        PreviousAdapter adapter2 = new PreviousAdapter(getApplicationContext(), R.layout.prev_list_view, updatedPrev);
-//                        ListView listView2 = (ListView) findViewById(R.id.previousList);
-//                        listView2.setAdapter(adapter2);
-//                        adapter2.notifyDataSetChanged();
+//                                if (snapshot != null && snapshot.exists()) {
+//                                    Log.d(TAG, "Current data: " + snapshot.getData());
+//                                    ArrayList<String> updatedRes = (ArrayList<String>) snapshot.getData().get("reservations");
+//                                    BookingAdapter adapter = new BookingAdapter(getApplicationContext(), R.layout.upcoming_list_view, updatedRes);
+//                                    ListView listView = (ListView) findViewById(R.id.upcomingList);
+//                                    listView.setAdapter(adapter);
+//                                    adapter.notifyDataSetChanged();
+//
+//                                    // display previous bookings via adapter
+//                                    ArrayList<String> updatedPrev = (ArrayList<String>) snapshot.getData().get("previous");
+//                                    Log.d(TAG, "updatedPrev size: " + updatedPrev.size());
+//                                    PreviousAdapter adapter2 = new PreviousAdapter(getApplicationContext(), R.layout.prev_list_view, updatedPrev);
+//                                    ListView listView2 = (ListView) findViewById(R.id.previousList);
+//                                    listView2.setAdapter(adapter2);
+//                                    adapter2.notifyDataSetChanged();
+//
+//
+//                                } else {
+//                                    Log.d(TAG, "Current data: null");
+//                                }
+//                            }
+//                        });
 
                     } else {
                         Toast.makeText(SummaryPage.this, "No such document",
@@ -174,45 +194,42 @@ public class SummaryPage extends AppCompatActivity {
         });
     }
 
+
     public void displayBookings(){
-        // initialize db
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        // retrieve contents from document
-        DocumentReference newRef = db.collection("users").document("syuenSee");
-        newRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        final DocumentReference newDocRef = db.collection("users").document("syuenSee");
+        newDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+            public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w(TAG, "Listen failed.", e);
+                    return;
+                }
 
-                        // display scrolling view of upcoming bookings
-                        ArrayList<String> updatedRes = (ArrayList<String>) document.get("reservations");
-                        Log.d(TAG, "updatedRes size: " + updatedRes.size());
-                        BookingAdapter adapter = new BookingAdapter(getApplicationContext(), R.layout.upcoming_list_view, updatedRes);
-                        ListView listView = (ListView) findViewById(R.id.upcomingList);
-                        listView.setAdapter(adapter);
-                        adapter.notifyDataSetChanged();
+                if (snapshot != null && snapshot.exists()) {
+                    Log.d(TAG, "Current data: " + snapshot.getData());
+                    ArrayList<String> updatedRes = (ArrayList<String>) snapshot.getData().get("reservations");
+                    BookingAdapter adapter = new BookingAdapter(getApplicationContext(), R.layout.upcoming_list_view, updatedRes);
+                    ListView listView = (ListView) findViewById(R.id.upcomingList);
+                    listView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
 
-                        // display previous bookings via adapter
-                        ArrayList<String> updatedPrev = (ArrayList<String>) document.get("previous");
-                        Log.d(TAG, "updatedPrev size: " + updatedPrev.size());
-                        PreviousAdapter adapter2 = new PreviousAdapter(getApplicationContext(), R.layout.prev_list_view, updatedPrev);
-                        ListView listView2 = (ListView) findViewById(R.id.previousList);
-                        listView2.setAdapter(adapter2);
-                        adapter2.notifyDataSetChanged();
+                    // display previous bookings via adapter
+                    ArrayList<String> updatedPrev = (ArrayList<String>) snapshot.getData().get("previous");
+                    Log.d(TAG, "updatedPrev size: " + updatedPrev.size());
+                    PreviousAdapter adapter2 = new PreviousAdapter(getApplicationContext(), R.layout.prev_list_view, updatedPrev);
+                    ListView listView2 = (ListView) findViewById(R.id.previousList);
+                    listView2.setAdapter(adapter2);
+                    adapter2.notifyDataSetChanged();
 
-                    } else {
-                        Toast.makeText(SummaryPage.this, "No such document",
-                                Toast.LENGTH_LONG).show();
-                    }
+
                 } else {
-                    Toast.makeText(SummaryPage.this, "get failed",
-                            Toast.LENGTH_LONG).show();
+                    Log.d(TAG, "Current data: null");
                 }
             }
         });
+
     }
 }
+
