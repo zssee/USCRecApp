@@ -1,6 +1,7 @@
 package com.example.uscrecapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -43,6 +45,7 @@ public class BookingAdapter extends ArrayAdapter<String> {
 
         TextView gymName = convertView.findViewById(R.id.gymName);
         TextView dateAndTime = convertView.findViewById(R.id.dateAndTime);
+        Button cancelBtn = convertView.findViewById(R.id.cancelButton);
 
         // set gym name and day/time
         db.collection("timeslots").whereEqualTo("slot", bookings.get(position))
@@ -64,6 +67,20 @@ public class BookingAdapter extends ArrayAdapter<String> {
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
                 }
+            }
+        });
+
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                db.collection("users").document("syuenSee")
+                        .update("reservations", FieldValue.arrayRemove(bookings.get(position)));
+
+                String msg = "display booking";
+                Intent i = new Intent(view.getContext(), SummaryPage.class);
+                i.putExtra("msg", msg);
+                view.getContext().startActivity(i);
+
             }
         });
 

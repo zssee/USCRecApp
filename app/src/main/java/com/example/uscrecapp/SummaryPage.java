@@ -3,7 +3,9 @@ package com.example.uscrecapp;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
@@ -51,9 +54,16 @@ public class SummaryPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_summary_page);
 
+        Intent intent = getIntent();
+        String message = intent.getStringExtra("msg");
+        if(message == "display booking"){
+            displayBookings();
+        }
+
         // make variables
         TextView studentName = findViewById(R.id.studentName);
         TextView studentID = findViewById(R.id.studentID);
+        ImageView img = findViewById(R.id.myimage);
 
 
         // initialize db
@@ -74,9 +84,15 @@ public class SummaryPage extends AppCompatActivity {
                         Map<String, Object> map = (Map<String, Object>) document.getData();
                         String name = (String) map.get("name");
                         String id = (String) map.get("id");
+                        String imgUrl = (String) map.get("imgUrl");
                         ArrayList<String> group = (ArrayList<String>) document.get("reservations");
                         studentName.setText(name);
                         studentID.setText(id);
+
+                        int myImg = getStudentImg(imgUrl);
+                        img.setImageResource(myImg);
+
+
 
 
                         // if group.size() > 0, check if the timestamps for each of the bookings
@@ -126,39 +142,6 @@ public class SummaryPage extends AppCompatActivity {
                                 });
                             }
                         }
-
-//                        final DocumentReference newDocRef = db.collection("users").document("syuenSee");
-//                        newDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-//                            @Override
-//                            public void onEvent(@Nullable DocumentSnapshot snapshot,
-//                                                @Nullable FirebaseFirestoreException e) {
-//                                if (e != null) {
-//                                    Log.w(TAG, "Listen failed.", e);
-//                                    return;
-//                                }
-//
-//                                if (snapshot != null && snapshot.exists()) {
-//                                    Log.d(TAG, "Current data: " + snapshot.getData());
-//                                    ArrayList<String> updatedRes = (ArrayList<String>) snapshot.getData().get("reservations");
-//                                    BookingAdapter adapter = new BookingAdapter(getApplicationContext(), R.layout.upcoming_list_view, updatedRes);
-//                                    ListView listView = (ListView) findViewById(R.id.upcomingList);
-//                                    listView.setAdapter(adapter);
-//                                    adapter.notifyDataSetChanged();
-//
-//                                    // display previous bookings via adapter
-//                                    ArrayList<String> updatedPrev = (ArrayList<String>) snapshot.getData().get("previous");
-//                                    Log.d(TAG, "updatedPrev size: " + updatedPrev.size());
-//                                    PreviousAdapter adapter2 = new PreviousAdapter(getApplicationContext(), R.layout.prev_list_view, updatedPrev);
-//                                    ListView listView2 = (ListView) findViewById(R.id.previousList);
-//                                    listView2.setAdapter(adapter2);
-//                                    adapter2.notifyDataSetChanged();
-//
-//
-//                                } else {
-//                                    Log.d(TAG, "Current data: null");
-//                                }
-//                            }
-//                        });
 
                     } else {
                         Toast.makeText(SummaryPage.this, "No such document",
@@ -230,6 +213,19 @@ public class SummaryPage extends AppCompatActivity {
             }
         });
 
+    }
+
+    public int getStudentImg(String imgName){
+        switch (imgName)
+        {
+            case "syuen":
+                return R.drawable.syuen;
+            case "elle":
+                return R.drawable.temp;
+            case "kelly":
+                return R.drawable.temp;
+        }
+        return 0;
     }
 }
 

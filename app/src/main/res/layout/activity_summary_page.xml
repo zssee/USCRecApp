@@ -109,15 +109,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/upcomingList" />
 
-    <TextView
+    <ImageView
         android:id="@+id/myimage"
-        android:layout_width="129dp"
-        android:layout_height="119dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="32dp"
-        android:background="#807A7A"
-        android:text="user image"
-        android:textColor="#FFFFFF"
+        android:src="@drawable/temp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="TextContrastCheck" />
