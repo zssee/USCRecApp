@@ -48,7 +48,7 @@ public class SummaryPage extends AppCompatActivity {
     private static final String TAG = "SummaryPage";
     private Calendar cal = Calendar.getInstance();
     private Date currTime = new Date();
-    public String docName = "syuenSee";
+    public static String docName = "syuenSee";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,7 +180,7 @@ public class SummaryPage extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(item.getItemId()){
                     case R.id.home:
-                        Intent gymNav = new Intent(SummaryPage.this, MainActivity.class);
+                        Intent gymNav = new Intent(SummaryPage.this, gymSlots.class);
                         startActivity(gymNav);
                         break;
                     case R.id.person:
@@ -232,15 +232,15 @@ public class SummaryPage extends AppCompatActivity {
     }
 
     public int getStudentImg(String imgName){
-        switch (imgName)
-        {
-            case "syuen":
-                return R.drawable.syuen;
-            case "elle":
-                return R.drawable.temp;
-            case "kelly":
-                return R.drawable.student;
-        }
+//        switch (imgName)
+//        {
+//            case "syuen":
+//                return R.drawable.syuen;
+//            case "elle":
+//                return R.drawable.temp;
+//            case "kelly":
+//                return R.drawable.student;
+//        }
         return 0;
     }
 
