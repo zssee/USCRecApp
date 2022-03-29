@@ -7,12 +7,10 @@
         <entry key="app/src/main/res/drawable/person_foreground.xml" value="0.1285" />
         <entry key="app/src/main/res/drawable/userphoto.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_gym_slots.xml" value="0.2111111111111111" />
-        <entry key="app/src/main/res/layout/activity_log_in.xml" value="0.20161895751953127" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.2515625" />
-        <entry key="app/src/main/res/layout/activity_summary_page.xml" value="0.46295166015625" />
+        <entry key="app/src/main/res/layout/activity_home.xml" value="0.17256011962890627" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.21198425292968753" />
+        <entry key="app/src/main/res/layout/activity_summary_page.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.15760869565217392" />
-        <entry key="app/src/main/res/layout/prev_list_view.xml" value="0.3551968297214373" />
-        <entry key="app/src/main/res/layout/upcoming_list_view.xml" value="0.29347826086956524" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.2515625" />
       </map>
     </option>

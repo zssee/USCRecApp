@@ -186,8 +186,8 @@ public class SummaryPage extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(item.getItemId()){
                     case R.id.home:
-                        Intent gymNav = new Intent(SummaryPage.this, gymSlots.class);
-                        startActivity(gymNav);
+                        Intent homeNav = new Intent(SummaryPage.this, home.class);
+                        startActivity(homeNav);
                         break;
                     case R.id.person:
                         Intent sumNav = new Intent(SummaryPage.this, SummaryPage.class);
