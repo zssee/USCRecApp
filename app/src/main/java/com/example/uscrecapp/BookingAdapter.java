@@ -15,6 +15,8 @@ import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -28,10 +30,12 @@ public class BookingAdapter extends ArrayAdapter<String> {
     private ArrayList<String> bookings;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final String TAG = "BookingAdapter";
+    private Context context;
 
     public BookingAdapter(@NonNull Context context, int resource, ArrayList<String> bookings) {
         super(context, resource, bookings);
         this.bookings = bookings;
+        this.context = context;
     }
 
     @NonNull
@@ -46,6 +50,8 @@ public class BookingAdapter extends ArrayAdapter<String> {
         TextView gymName = convertView.findViewById(R.id.gymName);
         TextView dateAndTime = convertView.findViewById(R.id.dateAndTime);
         Button cancelBtn = convertView.findViewById(R.id.cancelButton);
+
+        final String[] currGym = new String[1];
 
         // set gym name and day/time
         db.collection("timeslots").whereEqualTo("slot", bookings.get(position))
@@ -63,6 +69,7 @@ public class BookingAdapter extends ArrayAdapter<String> {
                         String time = (String) map.get("time");
                         gymName.setText(gym);
                         dateAndTime.setText(day + " " + time);
+                        currGym[0] = gym;
                     }
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
@@ -73,18 +80,47 @@ public class BookingAdapter extends ArrayAdapter<String> {
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                db.collection("users").document("syuenSee")
+                // remove reservation from user's upcoming reservations
+                db.collection("users").document(SummaryPage.docName)
                         .update("reservations", FieldValue.arrayRemove(bookings.get(position)));
 
-                // check capacity of time slot
-                // if time slot capacity == 0, notify waitlist for that slot
-                // increment time slot capacity by 1
+                // remove user from gym signedUp array
+                db.collection("timeslots").document(bookings.get(position))
+                        .update("signedUp", FieldValue.arrayRemove(SummaryPage.docName));
+
+                // check if signedUp.size() == 9
+                DocumentReference docRef = db.collection("timeslots").document(bookings.get(position));
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                                Map<String, Object> map = (Map<String, Object>) document.getData();
+                                ArrayList<String> signedUp = (ArrayList<String>) document.get("signedUp");
+                                ArrayList<String> waitList = (ArrayList<String>) document.get("waitlist");
+                                // if true, notify wait list
+                                if((signedUp.size() == 9) && (waitList.size() != 0)){
+                                    // notify everyone in waitlist
+                                    Log.d(TAG, "notify waitlist");
+                                }
+
+                            } else {
+                                Log.d(TAG, "No such document");
+                            }
+                        } else {
+                            Log.d(TAG, "get failed with ", task.getException());
+                        }
+                    }
+                });
+
 
                 // update UI
                 String msg = "display booking";
-                Intent i = new Intent(view.getContext(), SummaryPage.class);
+                Intent i = new Intent(context, SummaryPage.class);
                 i.putExtra("msg", msg);
-                view.getContext().startActivity(i);
+                context.startActivity(i);
 
             }
         });

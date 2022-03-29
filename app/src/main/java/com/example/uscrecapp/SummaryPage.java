@@ -238,15 +238,15 @@ public class SummaryPage extends AppCompatActivity {
     }
 
     public int getStudentImg(String imgName){
-//        switch (imgName)
-//        {
-//            case "syuen":
-//                return R.drawable.syuen;
-//            case "elle":
-//                return R.drawable.temp;
-//            case "kelly":
-//                return R.drawable.student;
-//        }
+        switch (imgName)
+        {
+            case "syuen":
+                return R.drawable.syuen;
+            case "elizabeth":
+                return R.drawable.temp;
+            case "kelly":
+                return R.drawable.student;
+        }
         return 0;
     }
 
