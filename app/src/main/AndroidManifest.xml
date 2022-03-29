@@ -10,6 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.USCRecApp">
         <activity
+            android:name=".map"
+            android:exported="false"
+            android:label="@string/title_activity_map"
+            android:theme="@style/Theme.USCRecApp.NoActionBar" />
+        <activity
             android:name=".LogIn"
             android:exported="false" />
         <activity
