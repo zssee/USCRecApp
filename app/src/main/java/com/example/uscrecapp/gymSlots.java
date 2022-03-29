@@ -38,13 +38,21 @@ public class gymSlots extends AppCompatActivity{
     private int signedUpTemp = 0;
     private long capacityTemp = 0;
     private String selectedDay = "";
-    private String selectedGym = "Lyon";
+    private String selectedGym;
+    private String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gym_slots);
 
+        Intent intent = getIntent();
+        String id = intent.getStringExtra("gymFrom");
+        String name = intent.getStringExtra("name");
+        username = name;
+        Log.d("message", id);
+        selectedGym = id;
+        setGymTitle(selectedGym);
 
         // initialize variables
         //Spinner
@@ -91,7 +99,6 @@ public class gymSlots extends AppCompatActivity{
         //buttons
         setUpButtons();
 
-
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNav);
         bottomNavigationView.setSelectedItemId(R.id.home);
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -99,11 +106,15 @@ public class gymSlots extends AppCompatActivity{
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(item.getItemId()){
                     case R.id.home:
-                        Intent gymNav = new Intent(gymSlots.this, MainActivity.class);
+                        Intent gymNav = new Intent(gymSlots.this, map.class);
+                        gymNav.putExtra("name", username);
+                        gymNav.putExtra("gymFrom", selectedGym);
                         startActivity(gymNav);
                         break;
                     case R.id.person:
                         Intent sumNav = new Intent(gymSlots.this, SummaryPage.class);
+                        sumNav.putExtra("gymFrom", selectedGym);
+                        sumNav.putExtra("name", username);
                         startActivity(sumNav);
                         break;
                 }
@@ -115,7 +126,7 @@ public class gymSlots extends AppCompatActivity{
     public void setGymTitle(String gym){
         TextView gymTitle = findViewById(R.id.gymTitle);
         gymTitle.setText(gym +" Gym");
-        selectedGym = gym;
+//        selectedGym = gym;
     }
 
     public void changeCapacityText(String timeslot){

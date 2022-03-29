@@ -32,7 +32,7 @@
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textColorHighlight="#F8F5F5"
-        android:textSize="50dp"
+        android:textSize="35dp"
         app:layout_constraintBottom_toBottomOf="@+id/gymPic"
         app:layout_constraintEnd_toEndOf="@+id/gymPic"
         app:layout_constraintHorizontal_bias="1.0"

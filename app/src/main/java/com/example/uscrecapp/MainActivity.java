@@ -13,13 +13,21 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity{
 
+    public static boolean isLoggedIn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+//        if (!isLoggedIn){
         Intent toLogIn = new Intent(this, LogIn.class);
         startActivity(toLogIn);
+//        }
+//        else{
+//            Intent intent = new Intent(this, SummaryPage.class);
+//            startActivity(intent);
+//        }
+
 
 //        Button button = findViewById(R.id.summaryNav);
 //        button.setOnClickListener(new View.OnClickListener() {

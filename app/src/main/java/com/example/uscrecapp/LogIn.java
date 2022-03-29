@@ -24,15 +24,13 @@ import java.util.Map;
 
 public class LogIn extends AppCompatActivity {
     private static final String TAG = "LogIn";
-
+    private String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
-
         EditText userName = findViewById(R.id.userName);
-
 
         Button logInBtn = findViewById(R.id.logIn);
         logInBtn.setOnClickListener(new View.OnClickListener() {
@@ -40,7 +38,6 @@ public class LogIn extends AppCompatActivity {
             public void onClick(View view) {
                 String username = userName.getText().toString(); //gets you the contents of edit text
                 Log.d(TAG, username);
-
                 // initialize db
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -54,9 +51,11 @@ public class LogIn extends AppCompatActivity {
 
                                 if(task.getResult().size() != 0){
                                     // let user login
+                                    MainActivity.isLoggedIn = true;
+
                                     String msg = username;
                                     Intent sumNav = new Intent(view.getContext(),  map.class);
-                                    sumNav.putExtra("msg", msg);
+                                    sumNav.putExtra("name", username);
                                     startActivity(sumNav);
                                 }
                                 else{

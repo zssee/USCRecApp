@@ -54,6 +54,7 @@ public class SummaryPage extends AppCompatActivity {
     public static SummaryPage getInstance(){
         return singleton;
     }
+    public String selectedGym;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,30 +63,24 @@ public class SummaryPage extends AppCompatActivity {
 
         singleton = this;
 
-
         Intent intent = getIntent();
         String message = intent.getStringExtra("msg");
+        String selectedGym = intent.getStringExtra("gymFrom");
+        String username = intent.getStringExtra("name");
         if(message == "display booking"){
             displayBookings();
         }else{
             // passed a user name
             // find documentPath
-            docName = toCamelCase(message);
-            Log.d(TAG, "docName: " + docName);
+//            docName = toCamelCase(message);
+//            Log.d(TAG, "docName: " + docName);
         }
-
-
-
-
-
-
 
 
         // make variables
         TextView studentName = findViewById(R.id.studentName);
         TextView studentID = findViewById(R.id.studentID);
         ImageView img = findViewById(R.id.myimage);
-
 
         // initialize db
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -186,11 +181,15 @@ public class SummaryPage extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(item.getItemId()){
                     case R.id.home:
-                        Intent gymNav = new Intent(SummaryPage.this, gymSlots.class);
+                        Intent gymNav = new Intent(SummaryPage.this, map.class);
+                        gymNav.putExtra("gymFrom", selectedGym);
+                        gymNav.putExtra("name", username);
                         startActivity(gymNav);
                         break;
                     case R.id.person:
-                        Intent sumNav = new Intent(SummaryPage.this, SummaryPage.class);
+                        Intent sumNav = new Intent(SummaryPage.this, gymSlots.class);
+                        sumNav.putExtra("gymFrom", selectedGym);
+                        sumNav.putExtra("name", username);
                         startActivity(sumNav);
                         break;
                 }
@@ -237,6 +236,9 @@ public class SummaryPage extends AppCompatActivity {
 
     }
 
+    public void updateName(String name){
+
+    }
     public int getStudentImg(String imgName){
         switch (imgName)
         {
@@ -265,7 +267,6 @@ public class SummaryPage extends AppCompatActivity {
         if(count == 0){
             return s.toLowerCase();
         }
-
         return s.substring(0, 1).toUpperCase() +
                 s.substring(1).toLowerCase();
     }
