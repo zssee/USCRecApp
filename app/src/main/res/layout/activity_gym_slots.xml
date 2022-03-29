@@ -42,13 +42,11 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="407dp"
-        android:layout_height="428dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="116dp"
+        android:layout_width="404dp"
+        android:layout_height="445dp"
+        android:layout_marginBottom="39dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -61,6 +59,27 @@
             android:text="Reservations"
             android:textColor="#FFFFFF"
             android:textSize="40dp" />
+
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="42dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/selectDay"
+                android:layout_width="217dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Select Day:"
+                android:textSize="20sp" />
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="175dp"
+                android:layout_height="42dp" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -78,39 +97,39 @@
                 <TextView
                     android:id="@+id/timeText"
                     android:layout_width="match_parent"
-                    android:layout_height="47dp"
+                    android:layout_height="42dp"
                     android:gravity="center"
-                    android:text="8:00-9:00am"
+                    android:text="8:00-10:00am"
                     android:textSize="17dp" />
 
                 <TextView
-                    android:id="@+id/capText"
+                    android:id="@+id/capText8"
                     android:layout_width="match_parent"
                     android:layout_height="32dp"
                     android:gravity="center"
                     android:text="Capacity:"
-                    android:textSize="17dp" />
+                    android:textSize="13dp" />
             </LinearLayout>
 
             <Button
-                android:id="@+id/time"
+                android:id="@+id/reserve8"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:scaleX="0.7"
                 android:scaleY=".7"
-                android:text="Button" />
+                android:text="Reserve" />
 
             <Button
-                android:id="@+id/cap"
+                android:id="@+id/remind8"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:scaleX="0.7"
                 android:scaleY="0.7"
-                android:text="Button" />
+                android:text="Remind Me" />
 
         </LinearLayout>
 
@@ -130,39 +149,39 @@
                 <TextView
                     android:id="@+id/timeText2"
                     android:layout_width="match_parent"
-                    android:layout_height="47dp"
+                    android:layout_height="36dp"
                     android:gravity="center"
-                    android:text="8:00-9:00am"
+                    android:text="10:00-12:00pm"
                     android:textSize="17dp" />
 
                 <TextView
-                    android:id="@+id/capText2"
+                    android:id="@+id/capText10"
                     android:layout_width="match_parent"
                     android:layout_height="32dp"
                     android:gravity="center"
                     android:text="Capacity:"
-                    android:textSize="17dp" />
+                    android:textSize="13dp" />
             </LinearLayout>
 
             <Button
-                android:id="@+id/time2"
+                android:id="@+id/reserve10"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:scaleX="0.7"
                 android:scaleY=".7"
-                android:text="Button" />
+                android:text="Reserve" />
 
             <Button
-                android:id="@+id/cap2"
+                android:id="@+id/remind10"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:scaleX="0.7"
                 android:scaleY="0.7"
-                android:text="Button" />
+                android:text="Remind Me" />
 
         </LinearLayout>
 
@@ -182,39 +201,39 @@
                 <TextView
                     android:id="@+id/timeText3"
                     android:layout_width="match_parent"
-                    android:layout_height="47dp"
+                    android:layout_height="38dp"
                     android:gravity="center"
-                    android:text="8:00-9:00am"
+                    android:text="12:00-2:00pm"
                     android:textSize="17dp" />
 
                 <TextView
-                    android:id="@+id/capText3"
+                    android:id="@+id/capText12"
                     android:layout_width="match_parent"
                     android:layout_height="32dp"
                     android:gravity="center"
                     android:text="Capacity:"
-                    android:textSize="17dp" />
+                    android:textSize="13dp" />
             </LinearLayout>
 
             <Button
-                android:id="@+id/time3"
+                android:id="@+id/reserve12"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:scaleX="0.7"
                 android:scaleY=".7"
-                android:text="Button" />
+                android:text="Reserve" />
 
             <Button
-                android:id="@+id/cap3"
+                android:id="@+id/remind12"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:scaleX="0.7"
                 android:scaleY="0.7"
-                android:text="Button" />
+                android:text="Remind Me" />
 
         </LinearLayout>
 
@@ -234,39 +253,39 @@
                 <TextView
                     android:id="@+id/timeText4"
                     android:layout_width="match_parent"
-                    android:layout_height="47dp"
+                    android:layout_height="37dp"
                     android:gravity="center"
-                    android:text="8:00-9:00am"
+                    android:text="2:00-4:00pm"
                     android:textSize="17dp" />
 
                 <TextView
-                    android:id="@+id/capText4"
+                    android:id="@+id/capText2"
                     android:layout_width="match_parent"
                     android:layout_height="32dp"
                     android:gravity="center"
                     android:text="Capacity:"
-                    android:textSize="17dp" />
+                    android:textSize="13dp" />
             </LinearLayout>
 
             <Button
-                android:id="@+id/time4"
+                android:id="@+id/reserve2"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:scaleX="0.7"
                 android:scaleY=".7"
-                android:text="Button" />
+                android:text="Reserve" />
 
             <Button
-                android:id="@+id/cap4"
+                android:id="@+id/remind2"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:scaleX="0.7"
                 android:scaleY="0.7"
-                android:text="Button" />
+                android:text="Remind Me" />
 
         </LinearLayout>
 
@@ -286,45 +305,46 @@
                 <TextView
                     android:id="@+id/timeText5"
                     android:layout_width="match_parent"
-                    android:layout_height="47dp"
+                    android:layout_height="36dp"
                     android:gravity="center"
-                    android:text="8:00-9:00am"
+                    android:text="4:00-6:00pm"
                     android:textSize="17dp" />
 
                 <TextView
-                    android:id="@+id/capText5"
+                    android:id="@+id/capText4"
                     android:layout_width="match_parent"
                     android:layout_height="32dp"
                     android:gravity="center"
                     android:text="Capacity:"
-                    android:textSize="17dp" />
+                    android:textSize="13dp" />
             </LinearLayout>
 
             <Button
-                android:id="@+id/time5"
+                android:id="@+id/reserve4"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:scaleX="0.7"
                 android:scaleY=".7"
-                android:text="Button" />
+                android:text="Reserve" />
 
             <Button
-                android:id="@+id/cap5"
+                android:id="@+id/remind4"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:scaleX="0.7"
                 android:scaleY="0.7"
-                android:text="Button" />
+                android:text="Remind Me" />
 
         </LinearLayout>
 
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -336,8 +356,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#E8E7E7"
-            app:menu="@menu/bottom_nav_menu"
-            />
+            app:menu="@menu/bottom_nav_menu" />
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

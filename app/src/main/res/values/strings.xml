@@ -10,4 +10,9 @@
     <string name="gym_name">Gym Name</string>
     <string name="previous_bookings">Previous Bookings</string>
     <string name="summary_page">summary page</string>
+    <string-array name="days">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+    </string-array>
 </resources>
