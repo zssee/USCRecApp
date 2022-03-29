@@ -50,11 +50,17 @@ public class SummaryPage extends AppCompatActivity {
     private Date currTime = new Date();
     public static String docName = "syuenSee";
 
+    public static SummaryPage singleton;
+    public static SummaryPage getInstance(){
+        return singleton;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_summary_page);
 
+        singleton = this;
 
 
         Intent intent = getIntent();

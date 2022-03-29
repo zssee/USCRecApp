@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -26,7 +27,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class gymSlots extends AppCompatActivity{
@@ -35,7 +38,7 @@ public class gymSlots extends AppCompatActivity{
     private int signedUpTemp = 0;
     private long capacityTemp = 0;
     private String selectedDay = "";
-    private String selectedGym = "";
+    private String selectedGym = "Lyon";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,74 +55,41 @@ public class gymSlots extends AppCompatActivity{
         mySpinner.setAdapter(myAdapter);
         selectedDay = mySpinner.getSelectedItem().toString();
 
-        //button
-        Button reserve8 = findViewById(R.id.reserve8);
-
-        //creating button click listeners
-        reserve8.setOnClickListener(new View.OnClickListener() {
+        mySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View view) {
-                checkCapacity("lyonMon8-10");
-                if(checkCapacity("lyonMon8-10")){
-                    addUsertoSlot(SummaryPage.docName, "lyonMon8-10");
-                }
-            }
-        });
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                selectedDay = mySpinner.getSelectedItem().toString();
+                Log.d(TAG, selectedDay);
+                db.collection("timeslots").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
 
-        Button remind8 = findViewById(R.id.remind8);
-        remind8.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(!checkCapacity("lyonMon8-10")){
-                    addUsertoWaitlist(SummaryPage.docName, "lyonMon8-10");
-                }
-            }
-        });
+                                Map<String, Object> map = (Map<String, Object>) document.getData();
+                                String time = (String)map.get("time");
+                                String slot = (String)map.get("slot");
 
-        Button reserve10 = findViewById(R.id.reserve10);
-        reserve10.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(checkCapacity("lyonMon10-12")){
-                    addUsertoSlot(SummaryPage.docName, "lyonMon10-12");
-                }
-            }
-        });
+                                changeCapacityText(slot);
 
-        Button reserve12 = findViewById(R.id.reserve12);
-        reserve12.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(checkCapacity("lyonMon12-2")){
-                    addUsertoSlot(SummaryPage.docName, "lyonMon12-2");
-                }
-            }
-        });
+                            }
 
-
-
-        //getting capacities from firestore and displaying
-        db.collection("timeslots").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        Log.d(TAG, document.getId() + " => " + document.getData());
-
-                        Map<String, Object> map = (Map<String, Object>) document.getData();
-                        String time = (String)map.get("time");
-                        String slot = (String)map.get("slot");
-
-                        //TO DO: need to also check which day the user selects to see (whenever a fragment is clicked)
-                        changeCapacityText(slot);
-
+                        } else {
+                            Log.d(TAG, "get failed with ", task.getException());
+                        }
                     }
+                });
+            }
 
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
-                }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
+
+        //buttons
+        setUpButtons();
 
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNav);
@@ -156,19 +126,21 @@ public class gymSlots extends AppCompatActivity{
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                         Map<String, Object> map = (Map<String, Object>) document.getData();
                         List<String> signedUp = (List<String>)map.get("signedUp");
-                        long capacity = (long) map.get("capacity");
+                        Long capacity = (Long) map.get("capacity");
                         String time = (String)map.get("time");
                         String day = (String)map.get("day");
+                        String gym = (String)map.get("gymName");
+                        Log.d(TAG, " " + capacity + " "+ day + " " + time + " "+ gym);
 
                         boolean full = false;
-                        if(signedUp.size() >= capacity){
+                        if(signedUp.size() >= capacity.intValue()){
                             full = true;
                         }
 
-                        if(day.equals(selectedDay)){
+                        if(day.equals(selectedDay) && gym.toLowerCase(Locale.ROOT).equals(selectedGym.toLowerCase(Locale.ROOT))){
+                            Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                             if (time.equals("8:00am-10:00am")) {
                                 TextView capacityView = findViewById(R.id.capText8);
                                 if(full){
@@ -228,48 +200,13 @@ public class gymSlots extends AppCompatActivity{
         });
     }
 
-    boolean checkCapacity(String timeslot){
-        DocumentReference docRef = db.collection("timeslots").document(timeslot);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                        Map<String, Object> map = (Map<String, Object>) document.getData();
-                        List<String> signedUp = (List<String>)map.get("signedUp");
-                        signedUpTemp = signedUp.size();
-                        capacityTemp = (long) map.get("capacity");
-                        Log.d(TAG, " firestore "+ signedUpTemp + " " + capacityTemp);
-                    } else {
-                        Log.d(TAG, "No such document");
-                    }
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
-                }
-            }
-        });
-
-        Log.d(TAG, " hi"+ signedUpTemp + " " + capacityTemp);
-        if(signedUpTemp < capacityTemp){
-            return true;
-        }
-        else{
-            return false;
-        }
-
-    }
-
-    void addUsertoSlot(String name, String timeslot){
-        changeCapacityText(timeslot);
-
+    public void addUsertoSlot(String name, String timeslot){
         DocumentReference docRef = db.collection("timeslots").document(timeslot);
         docRef.update("signedUp", FieldValue.arrayUnion(name))
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "DocumentSnapshot successfully updated!");
+                        Log.d(TAG, name + " added to the list!");
                         db.collection("users").document(name).update("reservations", FieldValue.arrayUnion(timeslot));
                     }
                 })
@@ -280,16 +217,20 @@ public class gymSlots extends AppCompatActivity{
                     }
                 });
 
+        changeCapacityText(timeslot);
+
+
+
 
     }
 
-    void addUsertoWaitlist(String name, String timeslot){
+    public void addUsertoWaitlist(String name, String timeslot){
         DocumentReference docRef = db.collection("timeslots").document(timeslot);
         docRef.update("waitlist", FieldValue.arrayUnion(name))
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "DocumentSnapshot successfully updated!");
+                        Log.d(TAG, name + " added to the waitlist!");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -301,8 +242,368 @@ public class gymSlots extends AppCompatActivity{
 
     }
 
+    public void removeUserfromSlot(String name, String timeslot){
+        DocumentReference docRef = db.collection("timeslots").document(timeslot);
+        docRef.update("signedUp", FieldValue.arrayRemove(name))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Successfully removed " + name + "!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error removing user", e);
+                    }
+                });
+    }
+
+    private String shortenDay(String day){
+        if(day.equals("Monday")){
+            return day.substring(0,3);
+        }
+        else if(day.equals("Tuesday")){
+            return day.substring(0,4);
+        }
+        else{
+            return day.substring(0,3);
+        }
+    }
+
+    private void setUpButtons() {
+        //buttons
+        Button reserve8 = findViewById(R.id.reserve8);
+        Button reserve10 = findViewById(R.id.reserve10);
+        Button reserve12 = findViewById(R.id.reserve12);
+        Button reserve2 = findViewById(R.id.reserve2);
+        Button reserve4 = findViewById(R.id.reserve4);
+
+        Button remind8 = findViewById(R.id.remind8);
+        Button remind10 = findViewById(R.id.remind10);
+        Button remind12 = findViewById(R.id.remind12);
+        Button remind2 = findViewById(R.id.remind2);
+        Button remind4 = findViewById(R.id.remind4);
+
+        // ----- 8AM-10AM BUTTONS
+        reserve8.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String gymDay = selectedGym.toLowerCase(Locale.ROOT) + shortenDay(selectedDay);
+                    Log.d(TAG, "DAY!!! " + gymDay);
+                    DocumentReference docRef = db.collection("timeslots").document(gymDay + "8-10");
+                    docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+                                    Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                                    Map<String, Object> map = (Map<String, Object>) document.getData();
+                                    List<String> signedUp = (List<String>) map.get("signedUp");
+                                    long capacity = (long) map.get("capacity");
+                                    if (signedUp.size() < capacity) {
+                                        addUsertoSlot(SummaryPage.docName, gymDay + "8-10");
+                                    }
+
+                                } else {
+                                    Log.d(TAG, "No such document");
+                                }
+                            } else {
+                                Log.d(TAG, "get failed with ", task.getException());
+                            }
+                        }
+                    });
+                }
+            });
+
+        remind8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String gymDay = selectedGym.toLowerCase(Locale.ROOT) + shortenDay(selectedDay);
+                Log.d(TAG, "DAY!!! " + gymDay);
+                DocumentReference docRef = db.collection("timeslots").document(gymDay + "8-10");
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                                Map<String, Object> map = (Map<String, Object>) document.getData();
+                                List<String> signedUp = (List<String>) map.get("signedUp");
+                                long capacity = (long) map.get("capacity");
+                                if (signedUp.size() >= capacity) {
+                                    addUsertoWaitlist(SummaryPage.docName, gymDay + "8-10");
+                                }
+
+                            } else {
+                                Log.d(TAG, "No such document");
+                            }
+                        } else {
+                            Log.d(TAG, "get failed with ", task.getException());
+                        }
+                    }
+                });
+            }
+        });
 
 
+        // ----- 10AM-12PM BUTTONS
+        reserve10.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String gymDay = selectedGym.toLowerCase(Locale.ROOT) + shortenDay(selectedDay);
+                Log.d(TAG, "DAY!!! " + gymDay);
+                DocumentReference docRef = db.collection("timeslots").document(gymDay + "10-12");
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                                Map<String, Object> map = (Map<String, Object>) document.getData();
+                                List<String> signedUp = (List<String>) map.get("signedUp");
+                                long capacity = (long) map.get("capacity");
+                                if (signedUp.size() < capacity) {
+                                    addUsertoSlot(SummaryPage.docName, gymDay + "10-12");
+                                }
+
+                            } else {
+                                Log.d(TAG, "No such document");
+                            }
+                        } else {
+                            Log.d(TAG, "get failed with ", task.getException());
+                        }
+                    }
+                });
+            }
+        });
+
+        remind10.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String gymDay = selectedGym.toLowerCase(Locale.ROOT) + shortenDay(selectedDay);
+                Log.d(TAG, "DAY!!! " + gymDay);
+                DocumentReference docRef = db.collection("timeslots").document(gymDay + "10-12");
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                                Map<String, Object> map = (Map<String, Object>) document.getData();
+                                List<String> signedUp = (List<String>) map.get("signedUp");
+                                long capacity = (long) map.get("capacity");
+                                if (signedUp.size() >= capacity) {
+                                    addUsertoWaitlist(SummaryPage.docName, gymDay + "10-12");
+                                }
+
+                            } else {
+                                Log.d(TAG, "No such document");
+                            }
+                        } else {
+                            Log.d(TAG, "get failed with ", task.getException());
+                        }
+                    }
+                });
+            }
+        });
+
+
+        // ----- 12PM-2PM BUTTONS
+        reserve12.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String gymDay = selectedGym.toLowerCase(Locale.ROOT) + shortenDay(selectedDay);
+                Log.d(TAG, "DAY!!! " + gymDay);
+                DocumentReference docRef = db.collection("timeslots").document(gymDay + "12-2");
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                                Map<String, Object> map = (Map<String, Object>) document.getData();
+                                List<String> signedUp = (List<String>) map.get("signedUp");
+                                long capacity = (long) map.get("capacity");
+                                if (signedUp.size() < capacity) {
+                                    addUsertoSlot(SummaryPage.docName, gymDay + "12-2");
+                                }
+
+                            } else {
+                                Log.d(TAG, "No such document");
+                            }
+                        } else {
+                            Log.d(TAG, "get failed with ", task.getException());
+                        }
+                    }
+                });
+            }
+        });
+
+        remind12.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String gymDay = selectedGym.toLowerCase(Locale.ROOT) + shortenDay(selectedDay);
+                Log.d(TAG, "DAY!!! " + gymDay);
+                DocumentReference docRef = db.collection("timeslots").document(gymDay + "12-2");
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                                Map<String, Object> map = (Map<String, Object>) document.getData();
+                                List<String> signedUp = (List<String>) map.get("signedUp");
+                                long capacity = (long) map.get("capacity");
+                                if (signedUp.size() >= capacity) {
+                                    addUsertoWaitlist(SummaryPage.docName, gymDay + "12-2");
+                                }
+
+                            } else {
+                                Log.d(TAG, "No such document");
+                            }
+                        } else {
+                            Log.d(TAG, "get failed with ", task.getException());
+                        }
+                    }
+                });
+            }
+        });
+
+        // ----- 2PM-4PM BUTTONS
+        reserve2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String gymDay = selectedGym.toLowerCase(Locale.ROOT) + shortenDay(selectedDay);
+                Log.d(TAG, "DAY!!! " + gymDay);
+                DocumentReference docRef = db.collection("timeslots").document(gymDay + "2-4");
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                                Map<String, Object> map = (Map<String, Object>) document.getData();
+                                List<String> signedUp = (List<String>) map.get("signedUp");
+                                long capacity = (long) map.get("capacity");
+                                if (signedUp.size() < capacity) {
+                                    addUsertoSlot(SummaryPage.docName, gymDay + "2-4");
+                                }
+
+                            } else {
+                                Log.d(TAG, "No such document");
+                            }
+                        } else {
+                            Log.d(TAG, "get failed with ", task.getException());
+                        }
+                    }
+                });
+            }
+        });
+
+        remind2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String gymDay = selectedGym.toLowerCase(Locale.ROOT) + shortenDay(selectedDay);
+                Log.d(TAG, "DAY!!! " + gymDay);
+                DocumentReference docRef = db.collection("timeslots").document(gymDay + "2-4");
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                                Map<String, Object> map = (Map<String, Object>) document.getData();
+                                List<String> signedUp = (List<String>) map.get("signedUp");
+                                long capacity = (long) map.get("capacity");
+                                if (signedUp.size() >= capacity) {
+                                    addUsertoWaitlist(SummaryPage.docName, gymDay + "2-4");
+                                }
+
+                            } else {
+                                Log.d(TAG, "No such document");
+                            }
+                        } else {
+                            Log.d(TAG, "get failed with ", task.getException());
+                        }
+                    }
+                });
+            }
+        });
+
+        // ----- 4PM-6PM BUTTONS
+        reserve4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String gymDay = selectedGym.toLowerCase(Locale.ROOT) + shortenDay(selectedDay);
+                Log.d(TAG, "DAY!!! " + gymDay);
+                DocumentReference docRef = db.collection("timeslots").document(gymDay + "4-6");
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                                Map<String, Object> map = (Map<String, Object>) document.getData();
+                                List<String> signedUp = (List<String>) map.get("signedUp");
+                                long capacity = (long) map.get("capacity");
+                                if (signedUp.size() < capacity) {
+                                    addUsertoSlot(SummaryPage.docName, gymDay + "4-6");
+                                }
+
+                            } else {
+                                Log.d(TAG, "No such document");
+                            }
+                        } else {
+                            Log.d(TAG, "get failed with ", task.getException());
+                        }
+                    }
+                });
+            }
+        });
+
+        remind4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String gymDay = selectedGym.toLowerCase(Locale.ROOT) + shortenDay(selectedDay);
+                Log.d(TAG, "DAY!!! " + gymDay);
+                DocumentReference docRef = db.collection("timeslots").document(gymDay + "4-6");
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                                Map<String, Object> map = (Map<String, Object>) document.getData();
+                                List<String> signedUp = (List<String>) map.get("signedUp");
+                                long capacity = (long) map.get("capacity");
+                                if (signedUp.size() >= capacity) {
+                                    addUsertoWaitlist(SummaryPage.docName, gymDay + "4-6");
+                                }
+
+                            } else {
+                                Log.d(TAG, "No such document");
+                            }
+                        } else {
+                            Log.d(TAG, "get failed with ", task.getException());
+                        }
+                    }
+                });
+            }
+        });
+
+
+    }
 
 
 
