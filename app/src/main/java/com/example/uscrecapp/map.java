@@ -3,13 +3,17 @@ package com.example.uscrecapp;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 
 import androidx.navigation.ui.AppBarConfiguration;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
 public class map extends AppCompatActivity {
 
@@ -22,7 +26,7 @@ public class map extends AppCompatActivity {
         Intent intent = getIntent();
         String id = intent.getStringExtra("msg");
         username = id;
-
+        String selectedGym = "";
         setContentView(R.layout.activity_map);
         ImageButton l = (ImageButton) findViewById(R.id.lyon);
         l.setX(250);
@@ -37,6 +41,30 @@ public class map extends AppCompatActivity {
         v.setY(750);
         v.bringToFront();
 
+//        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNav);
+//        bottomNavigationView.bringToFront();
+//        bottomNavigationView.setSelectedItemId(R.id.home);
+//        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//                switch(item.getItemId()){
+//                    case R.id.home:
+////                        Intent gymNav = new Intent(gymSlots.this, map.class);
+////                        gymNav.putExtra("name", username);
+////                        gymNav.putExtra("gymFrom", selectedGym);
+////                        startActivity(gymNav);
+//                        break;
+//                    case R.id.person:
+//                        Intent sumNav = new Intent(map.this, SummaryPage.class);
+//                        sumNav.putExtra("gymFrom", selectedGym);
+//                        sumNav.putExtra("name", username);
+//                        startActivity(sumNav);
+//                        break;
+//                }
+//                return false;
+//            }
+//        });
+//    }
     }
     public void goGym(View v){
         Intent intent = new Intent(this, gymSlots.class);
