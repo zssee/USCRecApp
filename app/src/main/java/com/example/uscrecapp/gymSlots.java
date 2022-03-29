@@ -38,13 +38,14 @@ public class gymSlots extends AppCompatActivity{
     private int signedUpTemp = 0;
     private long capacityTemp = 0;
     private String selectedDay = "";
-    private String selectedGym = "Lyon";
+    public static String selectedGym = "Lyon";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gym_slots);
 
+        setGymTitle();
 
         // initialize variables
         //Spinner
@@ -99,7 +100,7 @@ public class gymSlots extends AppCompatActivity{
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(item.getItemId()){
                     case R.id.home:
-                        Intent gymNav = new Intent(gymSlots.this, MainActivity.class);
+                        Intent gymNav = new Intent(gymSlots.this, home.class);
                         startActivity(gymNav);
                         break;
                     case R.id.person:
@@ -112,10 +113,17 @@ public class gymSlots extends AppCompatActivity{
         });
     }
 
-    public void setGymTitle(String gym){
+    public void setGymTitle(){
         TextView gymTitle = findViewById(R.id.gymTitle);
-        gymTitle.setText(gym +" Gym");
-        selectedGym = gym;
+        if(selectedGym.equals("lyon")){
+            gymTitle.setText("Lyon Gym");
+        }
+        else if(selectedGym.equals("village")){
+            gymTitle.setText("Village Gym");
+        }
+        else{
+            gymTitle.setText("Uytengsu Gym");
+        }
     }
 
     public void changeCapacityText(String timeslot){
@@ -132,7 +140,11 @@ public class gymSlots extends AppCompatActivity{
                         String time = (String)map.get("time");
                         String day = (String)map.get("day");
                         String gym = (String)map.get("gymName");
-                        Log.d(TAG, " " + capacity + " "+ day + " " + time + " "+ gym);
+                        if(gym.equals("Uytengsu")){
+                            gym = "uy";
+                        }
+
+                        Log.d(TAG, " " + capacity + " "+ day + " " + time + " "+ gym + " selected: " + selectedGym);
 
                         boolean full = false;
                         if(signedUp.size() >= capacity.intValue()){
@@ -219,9 +231,6 @@ public class gymSlots extends AppCompatActivity{
 
         changeCapacityText(timeslot);
 
-
-
-
     }
 
     public void addUsertoWaitlist(String name, String timeslot){
@@ -305,6 +314,7 @@ public class gymSlots extends AppCompatActivity{
                                     if (signedUp.size() < capacity) {
                                         addUsertoSlot(SummaryPage.docName, gymDay + "8-10");
                                     }
+                                    
 
                                 } else {
                                     Log.d(TAG, "No such document");

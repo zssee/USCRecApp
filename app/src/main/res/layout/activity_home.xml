@@ -13,8 +13,35 @@
         android:scaleType="fitEnd"
         app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/gymmap" />
+
+    <ImageButton
+        android:id="@+id/lyonBtn"
+        android:layout_width="56dp"
+        android:layout_height="53dp"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.228"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.39"
+        app:srcCompat="@drawable/star" />
+
+    <ImageButton
+        android:id="@+id/uyBtn"
+        android:layout_width="56dp"
+        android:layout_height="53dp"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.149"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.466"
+        app:srcCompat="@drawable/star" />
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
@@ -31,5 +58,19 @@
             android:background="#E8E7E7"
             app:menu="@menu/bottom_nav_menu" />
     </RelativeLayout>
+
+    <ImageButton
+        android:id="@+id/villageBtn"
+        android:layout_width="56dp"
+        android:layout_height="53dp"
+        android:contentDescription="Village"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.774"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.221"
+        app:srcCompat="@drawable/star" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

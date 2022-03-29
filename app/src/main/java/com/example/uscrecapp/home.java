@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -16,6 +18,39 @@ public class home extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        ImageButton village = (ImageButton) findViewById(R.id.villageBtn);
+        ImageButton lyon = (ImageButton) findViewById(R.id.lyonBtn);
+        ImageButton uy = (ImageButton) findViewById(R.id.uyBtn);
+
+        village.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent gymNav = new Intent(home.this, gymSlots.class);
+                gymSlots.selectedGym = "village";
+                startActivity(gymNav);
+            }
+        });
+
+        lyon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent gymNav = new Intent(home.this, gymSlots.class);
+                gymSlots.selectedGym = "lyon";
+                startActivity(gymNav);
+            }
+        });
+
+        uy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent gymNav = new Intent(home.this, gymSlots.class);
+                gymSlots.selectedGym = "uy";
+                startActivity(gymNav);
+            }
+        });
+
+
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNav);
         bottomNavigationView.setSelectedItemId(R.id.home);
