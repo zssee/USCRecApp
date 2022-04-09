@@ -50,6 +50,7 @@ public class BookingAdapter extends ArrayAdapter<String> {
         TextView gymName = convertView.findViewById(R.id.gymName);
         TextView dateAndTime = convertView.findViewById(R.id.dateAndTime);
         Button cancelBtn = convertView.findViewById(R.id.cancelButton);
+        cancelBtn.setTag(position);
 
         final String[] currGym = new String[1];
 
@@ -117,10 +118,10 @@ public class BookingAdapter extends ArrayAdapter<String> {
 
 
                 // update UI
-                String msg = "display booking";
-                Intent i = new Intent(context, SummaryPage.class);
-                i.putExtra("msg", msg);
-                context.startActivity(i);
+                Integer index = (Integer) view.getTag();
+                bookings.remove(index.intValue());
+                notifyDataSetChanged();
+
 
             }
         });

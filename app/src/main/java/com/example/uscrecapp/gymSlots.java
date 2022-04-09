@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -38,13 +39,14 @@ public class gymSlots extends AppCompatActivity{
     private int signedUpTemp = 0;
     private long capacityTemp = 0;
     private String selectedDay = "";
-    private String selectedGym = "Lyon";
+    public static String selectedGym = "Lyon";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gym_slots);
 
+        setGymTitle();
 
         // initialize variables
         //Spinner
@@ -99,7 +101,7 @@ public class gymSlots extends AppCompatActivity{
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(item.getItemId()){
                     case R.id.home:
-                        Intent gymNav = new Intent(gymSlots.this, MainActivity.class);
+                        Intent gymNav = new Intent(gymSlots.this, home.class);
                         startActivity(gymNav);
                         break;
                     case R.id.person:
@@ -112,10 +114,17 @@ public class gymSlots extends AppCompatActivity{
         });
     }
 
-    public void setGymTitle(String gym){
+    public void setGymTitle(){
         TextView gymTitle = findViewById(R.id.gymTitle);
-        gymTitle.setText(gym +" Gym");
-        selectedGym = gym;
+        if(selectedGym.equals("lyon")){
+            gymTitle.setText("Lyon Gym");
+        }
+        else if(selectedGym.equals("village")){
+            gymTitle.setText("Village Gym");
+        }
+        else{
+            gymTitle.setText("Uytengsu Gym");
+        }
     }
 
     public void changeCapacityText(String timeslot){
@@ -132,7 +141,11 @@ public class gymSlots extends AppCompatActivity{
                         String time = (String)map.get("time");
                         String day = (String)map.get("day");
                         String gym = (String)map.get("gymName");
-                        Log.d(TAG, " " + capacity + " "+ day + " " + time + " "+ gym);
+                        if(gym.equals("Uytengsu")){
+                            gym = "uy";
+                        }
+
+                        Log.d(TAG, " " + capacity + " "+ day + " " + time + " "+ gym + " selected: " + selectedGym);
 
                         boolean full = false;
                         if(signedUp.size() >= capacity.intValue()){
@@ -208,6 +221,9 @@ public class gymSlots extends AppCompatActivity{
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, name + " added to the list!");
                         db.collection("users").document(name).update("reservations", FieldValue.arrayUnion(timeslot));
+
+                        Toast.makeText(gymSlots.this, "You reserved the timeslot!",
+                                Toast.LENGTH_LONG).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -219,9 +235,6 @@ public class gymSlots extends AppCompatActivity{
 
         changeCapacityText(timeslot);
 
-
-
-
     }
 
     public void addUsertoWaitlist(String name, String timeslot){
@@ -231,6 +244,8 @@ public class gymSlots extends AppCompatActivity{
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, name + " added to the waitlist!");
+                        Toast.makeText(gymSlots.this, "You are on the waitlist!",
+                                Toast.LENGTH_LONG).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -287,35 +302,39 @@ public class gymSlots extends AppCompatActivity{
 
         // ----- 8AM-10AM BUTTONS
         reserve8.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String gymDay = selectedGym.toLowerCase(Locale.ROOT) + shortenDay(selectedDay);
-                    Log.d(TAG, "DAY!!! " + gymDay);
-                    DocumentReference docRef = db.collection("timeslots").document(gymDay + "8-10");
-                    docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document.exists()) {
-                                    Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                                    Map<String, Object> map = (Map<String, Object>) document.getData();
-                                    List<String> signedUp = (List<String>) map.get("signedUp");
-                                    long capacity = (long) map.get("capacity");
-                                    if (signedUp.size() < capacity) {
-                                        addUsertoSlot(SummaryPage.docName, gymDay + "8-10");
-                                    }
-
-                                } else {
-                                    Log.d(TAG, "No such document");
+            @Override
+            public void onClick(View view) {
+                String gymDay = selectedGym.toLowerCase(Locale.ROOT) + shortenDay(selectedDay);
+                Log.d(TAG, "DAY!!! " + gymDay);
+                DocumentReference docRef = db.collection("timeslots").document(gymDay + "8-10");
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                                Map<String, Object> map = (Map<String, Object>) document.getData();
+                                List<String> signedUp = (List<String>) map.get("signedUp");
+                                long capacity = (long) map.get("capacity");
+                                if (signedUp.size() < capacity) {
+                                    addUsertoSlot(SummaryPage.docName, gymDay + "8-10");
                                 }
+                                else{
+                                    Toast.makeText(gymSlots.this, "Timeslot is at capacity!",
+                                            Toast.LENGTH_LONG).show();
+                                }
+
                             } else {
-                                Log.d(TAG, "get failed with ", task.getException());
+                                Log.d(TAG, "No such document");
                             }
+                        } else {
+                            Log.d(TAG, "get failed with ", task.getException());
                         }
-                    });
-                }
-            });
+                    }
+                });
+            }
+        });
 
         remind8.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -368,6 +387,10 @@ public class gymSlots extends AppCompatActivity{
                                 long capacity = (long) map.get("capacity");
                                 if (signedUp.size() < capacity) {
                                     addUsertoSlot(SummaryPage.docName, gymDay + "10-12");
+                                }
+                                else{
+                                    Toast.makeText(gymSlots.this, "Timeslot is at capacity!",
+                                            Toast.LENGTH_LONG).show();
                                 }
 
                             } else {
@@ -433,6 +456,10 @@ public class gymSlots extends AppCompatActivity{
                                 if (signedUp.size() < capacity) {
                                     addUsertoSlot(SummaryPage.docName, gymDay + "12-2");
                                 }
+                                else{
+                                    Toast.makeText(gymSlots.this, "Timeslot is at capacity!",
+                                            Toast.LENGTH_LONG).show();
+                                }
 
                             } else {
                                 Log.d(TAG, "No such document");
@@ -496,6 +523,10 @@ public class gymSlots extends AppCompatActivity{
                                 if (signedUp.size() < capacity) {
                                     addUsertoSlot(SummaryPage.docName, gymDay + "2-4");
                                 }
+                                else{
+                                    Toast.makeText(gymSlots.this, "Timeslot is at capacity!",
+                                            Toast.LENGTH_LONG).show();
+                                }
 
                             } else {
                                 Log.d(TAG, "No such document");
@@ -558,6 +589,10 @@ public class gymSlots extends AppCompatActivity{
                                 long capacity = (long) map.get("capacity");
                                 if (signedUp.size() < capacity) {
                                     addUsertoSlot(SummaryPage.docName, gymDay + "4-6");
+                                }
+                                else{
+                                    Toast.makeText(gymSlots.this, "Timeslot is at capacity!",
+                                            Toast.LENGTH_LONG).show();
                                 }
 
                             } else {

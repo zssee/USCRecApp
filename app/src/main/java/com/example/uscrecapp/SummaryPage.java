@@ -48,7 +48,7 @@ public class SummaryPage extends AppCompatActivity {
     private static final String TAG = "SummaryPage";
     private Calendar cal = Calendar.getInstance();
     private Date currTime = new Date();
-    public static String docName = "syuenSee";
+    public static String docName;
 
     public static SummaryPage singleton;
     public static SummaryPage getInstance(){
@@ -65,14 +65,15 @@ public class SummaryPage extends AppCompatActivity {
 
         Intent intent = getIntent();
         String message = intent.getStringExtra("msg");
-        if(message == "display booking"){
-            displayBookings();
-        }else{
-            // passed a user name
-            // find documentPath
+
+        // passed a user name
+        // find documentPath
+        if(message != null){
             docName = toCamelCase(message);
             Log.d(TAG, "docName: " + docName);
         }
+
+
 
 
 
@@ -186,8 +187,8 @@ public class SummaryPage extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(item.getItemId()){
                     case R.id.home:
-                        Intent gymNav = new Intent(SummaryPage.this, gymSlots.class);
-                        startActivity(gymNav);
+                        Intent homeNav = new Intent(SummaryPage.this, home.class);
+                        startActivity(homeNav);
                         break;
                     case R.id.person:
                         Intent sumNav = new Intent(SummaryPage.this, SummaryPage.class);
@@ -246,6 +247,8 @@ public class SummaryPage extends AppCompatActivity {
                 return R.drawable.temp;
             case "kelly":
                 return R.drawable.student;
+            case "tommy":
+                return R.drawable.tommy;
         }
         return 0;
     }
