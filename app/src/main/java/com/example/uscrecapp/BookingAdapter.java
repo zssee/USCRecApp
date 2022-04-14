@@ -82,7 +82,7 @@ public class BookingAdapter extends ArrayAdapter<String> {
             @Override
             public void onClick(View view) {
                 // remove reservation from user's upcoming reservations
-                db.collection("users").document(SummaryPage.docName)
+                db.collection("users").document(SummaryPage.message)
                         .update("reservations", FieldValue.arrayRemove(bookings.get(position)));
 
                 // remove user from gym signedUp array

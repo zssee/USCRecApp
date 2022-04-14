@@ -27,7 +27,7 @@ import java.util.ArrayList;
 public class home extends AppCompatActivity {
     private static final String TAG = "MapPage";
     public static String docName;
-    private String message;
+    private static String message;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,16 +47,12 @@ public class home extends AppCompatActivity {
             Log.d(null, "message was null in home");
         }
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference docRef = db.collection("users").document(docName);
-
         ListView listView = (ListView) findViewById(R.id.upcomingList);
         listView.bringToFront();
         TextView title = (TextView)findViewById(R.id.upcomingTitle);
         title.bringToFront();
 
         displayBookings();
-
 
         ImageButton village = (ImageButton) findViewById(R.id.villageBtn);
         ImageButton lyon = (ImageButton) findViewById(R.id.lyonBtn);

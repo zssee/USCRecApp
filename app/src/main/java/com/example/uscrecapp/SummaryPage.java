@@ -49,7 +49,7 @@ public class SummaryPage extends AppCompatActivity {
     private Calendar cal = Calendar.getInstance();
     private Date currTime = new Date();
     public static String docName;
-
+    public static String message;
     public static SummaryPage singleton;
     public static SummaryPage getInstance(){
         return singleton;
@@ -64,7 +64,7 @@ public class SummaryPage extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        String message = intent.getStringExtra("msg");
+        message = intent.getStringExtra("msg");
 
         // passed a user name
         // find documentPath
@@ -74,6 +74,7 @@ public class SummaryPage extends AppCompatActivity {
         }
         else{
             Log.d(null, "message was null in summary");
+            docName = "";
         }
         // make variables
         TextView studentName = findViewById(R.id.studentName);
