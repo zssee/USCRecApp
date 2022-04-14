@@ -5,7 +5,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -13,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -54,7 +54,8 @@ public class home extends AppCompatActivity {
         listView.bringToFront();
 
         displayBookings();
-
+        TextView title = (TextView) findViewById(R.id.upcomingTitle);
+        title.bringToFront();
         ImageButton village = (ImageButton) findViewById(R.id.villageBtn);
         ImageButton lyon = (ImageButton) findViewById(R.id.lyonBtn);
         ImageButton uy = (ImageButton) findViewById(R.id.uyBtn);
@@ -133,18 +134,16 @@ public class home extends AppCompatActivity {
                 if (snapshot != null && snapshot.exists()) {
                     Log.d(TAG, "Current data: " + snapshot.getData());
                     ArrayList<String> updatedRes = (ArrayList<String>) snapshot.getData().get("reservations");
-                    BookingAdapter adapter = new BookingAdapter(getApplicationContext(), R.layout.upcoming_list_view, updatedRes);
+                    WindowAdapter adapter = new WindowAdapter(getApplicationContext(), R.layout.window_view, updatedRes);
                     ListView listView = (ListView) findViewById(R.id.upcomingList);
                     listView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
-
                 } else {
                     Log.d(TAG, "Current data: null");
                     Log.d(docName, "Name");
                 }
             }
         });
-
     }
     private static String toCamelCase(String s){
         String[] parts = s.split(" ");

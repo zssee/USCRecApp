@@ -20,9 +20,7 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 //        if (!isLoggedIn){
-        // temporarily changing this to home
-
-        Intent toLogIn = new Intent(this, home.class);
+        Intent toLogIn = new Intent(this, LogIn.class);
         startActivity(toLogIn);
 //        }
 //        else{
