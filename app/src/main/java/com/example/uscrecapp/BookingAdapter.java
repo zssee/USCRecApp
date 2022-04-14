@@ -121,6 +121,7 @@ public class BookingAdapter extends ArrayAdapter<String> {
                 Integer index = (Integer) view.getTag();
                 bookings.remove(index.intValue());
                 notifyDataSetChanged();
+                System.out.println("removed booking");
 
 
             }
