@@ -1,0 +1,1468 @@
+diff --git a/.idea/deploymentTargetDropDown.xml b/.idea/deploymentTargetDropDown.xml
+index 6df576a..e8c7f31 100644
+--- a/.idea/deploymentTargetDropDown.xml
++++ b/.idea/deploymentTargetDropDown.xml
+@@ -1,17 +1,17 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+   <component name="deploymentTargetDropDown">
+-    <runningDeviceTargetSelectedWithDropDown>
++    <targetSelectedWithDropDown>
+       <Target>
+-        <type value="RUNNING_DEVICE_TARGET" />
++        <type value="QUICK_BOOT_TARGET" />
+         <deviceKey>
+           <Key>
+             <type value="VIRTUAL_DEVICE_PATH" />
+-            <value value="$USER_HOME$/.android/avd/Pixel_5_API_Tiramisu.avd" />
++            <value value="$USER_HOME$/.android/avd/Pixel_5_API_30.avd" />
+           </Key>
+         </deviceKey>
+       </Target>
+-    </runningDeviceTargetSelectedWithDropDown>
+-    <timeTargetWasSelectedWithDropDown value="2022-04-13T05:15:37.554641Z" />
++    </targetSelectedWithDropDown>
++    <timeTargetWasSelectedWithDropDown value="2022-04-13T13:48:02.747664Z" />
+   </component>
+ </project>
+\ No newline at end of file
+diff --git a/app/src/androidTest/java/com/example/uscrecapp/KellyWindowTest.java b/app/src/androidTest/java/com/example/uscrecapp/KellyWindowTest.java
+new file mode 100644
+index 0000000..cc74626
+--- /dev/null
++++ b/app/src/androidTest/java/com/example/uscrecapp/KellyWindowTest.java
+@@ -0,0 +1,101 @@
++package com.example.uscrecapp;
++
++
++import static androidx.test.espresso.Espresso.onView;
++import static androidx.test.espresso.action.ViewActions.click;
++import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
++import static androidx.test.espresso.action.ViewActions.replaceText;
++import static androidx.test.espresso.assertion.ViewAssertions.matches;
++import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
++import static androidx.test.espresso.matcher.ViewMatchers.withId;
++import static androidx.test.espresso.matcher.ViewMatchers.withParent;
++import static androidx.test.espresso.matcher.ViewMatchers.withText;
++import static org.hamcrest.Matchers.allOf;
++
++import android.view.View;
++import android.view.ViewGroup;
++import android.view.ViewParent;
++
++import androidx.test.espresso.ViewInteraction;
++import androidx.test.filters.LargeTest;
++import androidx.test.rule.ActivityTestRule;
++import androidx.test.runner.AndroidJUnit4;
++
++import org.hamcrest.Description;
++import org.hamcrest.Matcher;
++import org.hamcrest.TypeSafeMatcher;
++import org.junit.Rule;
++import org.junit.Test;
++import org.junit.runner.RunWith;
++
++@LargeTest
++@RunWith(AndroidJUnit4.class)
++public class KellyWindowTest {
++
++    @Rule
++    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
++
++    @Test
++    public void kellyWindowTest() {
++        ViewInteraction appCompatEditText = onView(
++                allOf(withId(R.id.userName),
++                        childAtPosition(
++                                childAtPosition(
++                                        withId(android.R.id.content),
++                                        0),
++                                2),
++                        isDisplayed()));
++        appCompatEditText.perform(click());
++
++        ViewInteraction appCompatEditText2 = onView(
++                allOf(withId(R.id.userName),
++                        childAtPosition(
++                                childAtPosition(
++                                        withId(android.R.id.content),
++                                        0),
++                                2),
++                        isDisplayed()));
++        appCompatEditText2.perform(replaceText("Kelly Ma"), closeSoftKeyboard());
++
++        ViewInteraction materialButton = onView(
++                allOf(withId(R.id.logIn), withText("Log In"),
++                        childAtPosition(
++                                childAtPosition(
++                                        withId(android.R.id.content),
++                                        0),
++                                3),
++                        isDisplayed()));
++        materialButton.perform(click());
++
++        ViewInteraction textView = onView(
++                allOf(withId(R.id.dateAndTime), withText("Tuesday 12:00pm-2:00pm"),
++                        withParent(withParent(withId(R.id.upcomingList))),
++                        isDisplayed()));
++        textView.check(matches(withText("Tuesday 12:00pm-2:00pm")));
++
++        ViewInteraction textView2 = onView(
++                allOf(withId(R.id.gymName), withText("Lyon"),
++                        withParent(withParent(withId(R.id.upcomingList))),
++                        isDisplayed()));
++        textView2.check(matches(withText("Lyon")));
++    }
++
++    private static Matcher<View> childAtPosition(
++            final Matcher<View> parentMatcher, final int position) {
++
++        return new TypeSafeMatcher<View>() {
++            @Override
++            public void describeTo(Description description) {
++                description.appendText("Child at position " + position + " in parent ");
++                parentMatcher.describeTo(description);
++            }
++
++            @Override
++            public boolean matchesSafely(View view) {
++                ViewParent parent = view.getParent();
++                return parent instanceof ViewGroup && parentMatcher.matches(parent)
++                        && view.equals(((ViewGroup) parent).getChildAt(position));
++            }
++        };
++    }
++}
+diff --git a/app/src/androidTest/java/com/example/uscrecapp/LyonTest.java b/app/src/androidTest/java/com/example/uscrecapp/LyonTest.java
+new file mode 100644
+index 0000000..9ad4010
+--- /dev/null
++++ b/app/src/androidTest/java/com/example/uscrecapp/LyonTest.java
+@@ -0,0 +1,105 @@
++package com.example.uscrecapp;
++
++
++import static androidx.test.espresso.Espresso.onView;
++import static androidx.test.espresso.action.ViewActions.click;
++import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
++import static androidx.test.espresso.action.ViewActions.replaceText;
++import static androidx.test.espresso.assertion.ViewAssertions.matches;
++import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
++import static androidx.test.espresso.matcher.ViewMatchers.withId;
++import static androidx.test.espresso.matcher.ViewMatchers.withParent;
++import static androidx.test.espresso.matcher.ViewMatchers.withText;
++import static org.hamcrest.Matchers.allOf;
++
++import android.view.View;
++import android.view.ViewGroup;
++import android.view.ViewParent;
++
++import androidx.test.espresso.ViewInteraction;
++import androidx.test.filters.LargeTest;
++import androidx.test.rule.ActivityTestRule;
++import androidx.test.runner.AndroidJUnit4;
++
++import org.hamcrest.Description;
++import org.hamcrest.Matcher;
++import org.hamcrest.TypeSafeMatcher;
++import org.junit.Rule;
++import org.junit.Test;
++import org.junit.runner.RunWith;
++
++@LargeTest
++@RunWith(AndroidJUnit4.class)
++public class LyonTest {
++
++    @Rule
++    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
++
++    @Test
++    public void lyonTest() {
++        ViewInteraction appCompatEditText = onView(
++                allOf(withId(R.id.userName),
++                        childAtPosition(
++                                childAtPosition(
++                                        withId(android.R.id.content),
++                                        0),
++                                2),
++                        isDisplayed()));
++        appCompatEditText.perform(click());
++
++        ViewInteraction appCompatEditText2 = onView(
++                allOf(withId(R.id.userName),
++                        childAtPosition(
++                                childAtPosition(
++                                        withId(android.R.id.content),
++                                        0),
++                                2),
++                        isDisplayed()));
++        appCompatEditText2.perform(replaceText("Elizabeth Szabo"), closeSoftKeyboard());
++
++        ViewInteraction materialButton = onView(
++                allOf(withId(R.id.logIn), withText("Log In"),
++                        childAtPosition(
++                                childAtPosition(
++                                        withId(android.R.id.content),
++                                        0),
++                                3),
++                        isDisplayed()));
++        materialButton.perform(click());
++
++        ViewInteraction appCompatImageButton = onView(
++                allOf(withId(R.id.lyonBtn),
++                        childAtPosition(
++                                childAtPosition(
++                                        withId(android.R.id.content),
++                                        0),
++                                1),
++                        isDisplayed()));
++        appCompatImageButton.perform(click());
++
++        ViewInteraction textView = onView(
++                allOf(withId(R.id.gymTitle), withText("Lyon Gym"),
++                        withParent(withParent(withId(android.R.id.content))),
++                        isDisplayed()));
++        textView.check(matches(withText("Lyon Gym")));
++    }
++
++    private static Matcher<View> childAtPosition(
++            final Matcher<View> parentMatcher, final int position) {
++
++        return new TypeSafeMatcher<View>() {
++            @Override
++            public void describeTo(Description description) {
++                description.appendText("Child at position " + position + " in parent ");
++                parentMatcher.describeTo(description);
++            }
++
++            @Override
++            public boolean matchesSafely(View view) {
++                ViewParent parent = view.getParent();
++                return parent instanceof ViewGroup && parentMatcher.matches(parent)
++                        && view.equals(((ViewGroup) parent).getChildAt(position));
++            }
++        };
++    }
++}
+diff --git a/app/src/androidTest/java/com/example/uscrecapp/SmallWindow.java b/app/src/androidTest/java/com/example/uscrecapp/SmallWindow.java
+new file mode 100644
+index 0000000..c39323b
+--- /dev/null
++++ b/app/src/androidTest/java/com/example/uscrecapp/SmallWindow.java
+@@ -0,0 +1,111 @@
++package com.example.uscrecapp;
++
++
++import static androidx.test.espresso.Espresso.onView;
++import static androidx.test.espresso.action.ViewActions.click;
++import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
++import static androidx.test.espresso.action.ViewActions.replaceText;
++import static androidx.test.espresso.assertion.ViewAssertions.matches;
++import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
++import static androidx.test.espresso.matcher.ViewMatchers.withId;
++import static androidx.test.espresso.matcher.ViewMatchers.withParent;
++import static androidx.test.espresso.matcher.ViewMatchers.withText;
++import static org.hamcrest.Matchers.allOf;
++
++import android.view.View;
++import android.view.ViewGroup;
++import android.view.ViewParent;
++
++import androidx.test.espresso.ViewInteraction;
++import androidx.test.filters.LargeTest;
++import androidx.test.rule.ActivityTestRule;
++import androidx.test.runner.AndroidJUnit4;
++
++import org.hamcrest.Description;
++import org.hamcrest.Matcher;
++import org.hamcrest.TypeSafeMatcher;
++import org.junit.Rule;
++import org.junit.Test;
++import org.junit.runner.RunWith;
++
++@LargeTest
++@RunWith(AndroidJUnit4.class)
++public class SmallWindow {
++
++    @Rule
++    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
++
++    @Test
++    public void smallWindow() {
++        ViewInteraction appCompatEditText = onView(
++                allOf(withId(R.id.userName),
++                        childAtPosition(
++                                childAtPosition(
++                                        withId(android.R.id.content),
++                                        0),
++                                2),
++                        isDisplayed()));
++        appCompatEditText.perform(click());
++
++        ViewInteraction appCompatEditText2 = onView(
++                allOf(withId(R.id.userName),
++                        childAtPosition(
++                                childAtPosition(
++                                        withId(android.R.id.content),
++                                        0),
++                                2),
++                        isDisplayed()));
++        appCompatEditText2.perform(replaceText("Tommy Trojan"), closeSoftKeyboard());
++
++        ViewInteraction materialButton = onView(
++                allOf(withId(R.id.logIn), withText("Log In"),
++                        childAtPosition(
++                                childAtPosition(
++                                        withId(android.R.id.content),
++                                        0),
++                                3),
++                        isDisplayed()));
++        materialButton.perform(click());
++
++        ViewInteraction materialTextView = onView(
++                allOf(withId(R.id.upcomingTitle), withText("Upcoming Bookings"),
++                        childAtPosition(
++                                childAtPosition(
++                                        withId(android.R.id.content),
++                                        0),
++                                6),
++                        isDisplayed()));
++        materialTextView.perform(click());
++
++        ViewInteraction textView = onView(
++                allOf(withId(R.id.studentID), withText("0123456789"),
++                        withParent(withParent(withId(android.R.id.content))),
++                        isDisplayed()));
++        textView.check(matches(withText("0123456789")));
++
++        ViewInteraction textView2 = onView(
++                allOf(withId(R.id.studentID), withText("0123456789"),
++                        withParent(withParent(withId(android.R.id.content))),
++                        isDisplayed()));
++        textView2.check(matches(withText("0123456789")));
++    }
++
++    private static Matcher<View> childAtPosition(
++            final Matcher<View> parentMatcher, final int position) {
++
++        return new TypeSafeMatcher<View>() {
++            @Override
++            public void describeTo(Description description) {
++                description.appendText("Child at position " + position + " in parent ");
++                parentMatcher.describeTo(description);
++            }
++
++            @Override
++            public boolean matchesSafely(View view) {
++                ViewParent parent = view.getParent();
++                return parent instanceof ViewGroup && parentMatcher.matches(parent)
++                        && view.equals(((ViewGroup) parent).getChildAt(position));
++            }
++        };
++    }
++}
+diff --git a/app/src/androidTest/java/com/example/uscrecapp/UIMap.java b/app/src/androidTest/java/com/example/uscrecapp/UIMap.java
+new file mode 100644
+index 0000000..8985969
+--- /dev/null
++++ b/app/src/androidTest/java/com/example/uscrecapp/UIMap.java
+@@ -0,0 +1,114 @@
++package com.example.uscrecapp;
++
++
++import static androidx.test.espresso.Espresso.onView;
++import static androidx.test.espresso.action.ViewActions.click;
++import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
++import static androidx.test.espresso.action.ViewActions.replaceText;
++import static androidx.test.espresso.assertion.ViewAssertions.matches;
++import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
++import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
++import static androidx.test.espresso.matcher.ViewMatchers.withId;
++import static androidx.test.espresso.matcher.ViewMatchers.withParent;
++import static androidx.test.espresso.matcher.ViewMatchers.withText;
++import static org.hamcrest.Matchers.allOf;
++
++import android.view.View;
++import android.view.ViewGroup;
++import android.view.ViewParent;
++
++import androidx.test.espresso.ViewInteraction;
++import androidx.test.filters.LargeTest;
++import androidx.test.rule.ActivityTestRule;
++import androidx.test.runner.AndroidJUnit4;
++
++import org.hamcrest.Description;
++import org.hamcrest.Matcher;
++import org.hamcrest.TypeSafeMatcher;
++import org.junit.Rule;
++import org.junit.Test;
++import org.junit.runner.RunWith;
++
++@LargeTest
++@RunWith(AndroidJUnit4.class)
++public class UIMap {
++
++    @Rule
++    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
++
++    @Test
++    public void uIMap() {
++        ViewInteraction appCompatEditText = onView(
++                allOf(withId(R.id.userName),
++                        childAtPosition(
++                                childAtPosition(
++                                        withId(android.R.id.content),
++                                        0),
++                                2),
++                        isDisplayed()));
++        appCompatEditText.perform(click());
++
++        ViewInteraction appCompatEditText2 = onView(
++                allOf(withId(R.id.userName),
++                        childAtPosition(
++                                childAtPosition(
++                                        withId(android.R.id.content),
++                                        0),
++                                2),
++                        isDisplayed()));
++        appCompatEditText2.perform(replaceText("Tommy Trojan"), closeSoftKeyboard());
++
++        ViewInteraction materialButton = onView(
++                allOf(withId(R.id.logIn), withText("Log In"),
++                        childAtPosition(
++                                childAtPosition(
++                                        withId(android.R.id.content),
++                                        0),
++                                3),
++                        isDisplayed()));
++        materialButton.perform(click());
++
++        ViewInteraction imageButton = onView(
++                allOf(withId(R.id.villageBtn), withContentDescription("Village"),
++                        withParent(withParent(withId(android.R.id.content))),
++                        isDisplayed()));
++        imageButton.check(matches(isDisplayed()));
++
++        ViewInteraction imageButton2 = onView(
++                allOf(withId(R.id.uyBtn),
++                        withParent(withParent(withId(android.R.id.content))),
++                        isDisplayed()));
++        imageButton2.check(matches(isDisplayed()));
++
++        ViewInteraction imageButton3 = onView(
++                allOf(withId(R.id.lyonBtn),
++                        withParent(withParent(withId(android.R.id.content))),
++                        isDisplayed()));
++        imageButton3.check(matches(isDisplayed()));
++
++        ViewInteraction listView = onView(
++                allOf(withId(R.id.upcomingList),
++                        withParent(withParent(withId(android.R.id.content))),
++                        isDisplayed()));
++        listView.check(matches(isDisplayed()));
++    }
++
++    private static Matcher<View> childAtPosition(
++            final Matcher<View> parentMatcher, final int position) {
++
++        return new TypeSafeMatcher<View>() {
++            @Override
++            public void describeTo(Description description) {
++                description.appendText("Child at position " + position + " in parent ");
++                parentMatcher.describeTo(description);
++            }
++
++            @Override
++            public boolean matchesSafely(View view) {
++                ViewParent parent = view.getParent();
++                return parent instanceof ViewGroup && parentMatcher.matches(parent)
++                        && view.equals(((ViewGroup) parent).getChildAt(position));
++            }
++        };
++    }
++}
+diff --git a/app/src/androidTest/java/com/example/uscrecapp/UytengsuTest.java b/app/src/androidTest/java/com/example/uscrecapp/UytengsuTest.java
+new file mode 100644
+index 0000000..8870511
+--- /dev/null
++++ b/app/src/androidTest/java/com/example/uscrecapp/UytengsuTest.java
+@@ -0,0 +1,105 @@
++package com.example.uscrecapp;
++
++
++import static androidx.test.espresso.Espresso.onView;
++import static androidx.test.espresso.action.ViewActions.click;
++import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
++import static androidx.test.espresso.action.ViewActions.replaceText;
++import static androidx.test.espresso.assertion.ViewAssertions.matches;
++import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
++import static androidx.test.espresso.matcher.ViewMatchers.withId;
++import static androidx.test.espresso.matcher.ViewMatchers.withParent;
++import static androidx.test.espresso.matcher.ViewMatchers.withText;
++import static org.hamcrest.Matchers.allOf;
++
++import android.view.View;
++import android.view.ViewGroup;
++import android.view.ViewParent;
++
++import androidx.test.espresso.ViewInteraction;
++import androidx.test.filters.LargeTest;
++import androidx.test.rule.ActivityTestRule;
++import androidx.test.runner.AndroidJUnit4;
++
++import org.hamcrest.Description;
++import org.hamcrest.Matcher;
++import org.hamcrest.TypeSafeMatcher;
++import org.junit.Rule;
++import org.junit.Test;
++import org.junit.runner.RunWith;
++
++@LargeTest
++@RunWith(AndroidJUnit4.class)
++public class UytengsuTest {
++
++    @Rule
++    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
++
++    @Test
++    public void uytengsuTest() {
++        ViewInteraction appCompatEditText = onView(
++                allOf(withId(R.id.userName),
++                        childAtPosition(
++                                childAtPosition(
++                                        withId(android.R.id.content),
++                                        0),
++                                2),
++                        isDisplayed()));
++        appCompatEditText.perform(click());
++
++        ViewInteraction appCompatEditText2 = onView(
++                allOf(withId(R.id.userName),
++                        childAtPosition(
++                                childAtPosition(
++                                        withId(android.R.id.content),
++                                        0),
++                                2),
++                        isDisplayed()));
++        appCompatEditText2.perform(replaceText("Kelly Ma"), closeSoftKeyboard());
++
++        ViewInteraction materialButton = onView(
++                allOf(withId(R.id.logIn), withText("Log In"),
++                        childAtPosition(
++                                childAtPosition(
++                                        withId(android.R.id.content),
++                                        0),
++                                3),
++                        isDisplayed()));
++        materialButton.perform(click());
++
++        ViewInteraction appCompatImageButton = onView(
++                allOf(withId(R.id.uyBtn),
++                        childAtPosition(
++                                childAtPosition(
++                                        withId(android.R.id.content),
++                                        0),
++                                2),
++                        isDisplayed()));
++        appCompatImageButton.perform(click());
++
++        ViewInteraction textView = onView(
++                allOf(withId(R.id.gymTitle), withText("Uytengsu Gym"),
++                        withParent(withParent(withId(android.R.id.content))),
++                        isDisplayed()));
++        textView.check(matches(withText("Uytengsu Gym")));
++    }
++
++    private static Matcher<View> childAtPosition(
++            final Matcher<View> parentMatcher, final int position) {
++
++        return new TypeSafeMatcher<View>() {
++            @Override
++            public void describeTo(Description description) {
++                description.appendText("Child at position " + position + " in parent ");
++                parentMatcher.describeTo(description);
++            }
++
++            @Override
++            public boolean matchesSafely(View view) {
++                ViewParent parent = view.getParent();
++                return parent instanceof ViewGroup && parentMatcher.matches(parent)
++                        && view.equals(((ViewGroup) parent).getChildAt(position));
++            }
++        };
++    }
++}
+diff --git a/app/src/androidTest/java/com/example/uscrecapp/VillageTest.java b/app/src/androidTest/java/com/example/uscrecapp/VillageTest.java
+new file mode 100644
+index 0000000..76fd8f5
+--- /dev/null
++++ b/app/src/androidTest/java/com/example/uscrecapp/VillageTest.java
+@@ -0,0 +1,106 @@
++package com.example.uscrecapp;
++
++
++import static androidx.test.espresso.Espresso.onView;
++import static androidx.test.espresso.action.ViewActions.click;
++import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
++import static androidx.test.espresso.action.ViewActions.replaceText;
++import static androidx.test.espresso.assertion.ViewAssertions.matches;
++import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
++import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
++import static androidx.test.espresso.matcher.ViewMatchers.withId;
++import static androidx.test.espresso.matcher.ViewMatchers.withParent;
++import static androidx.test.espresso.matcher.ViewMatchers.withText;
++import static org.hamcrest.Matchers.allOf;
++
++import android.view.View;
++import android.view.ViewGroup;
++import android.view.ViewParent;
++
++import androidx.test.espresso.ViewInteraction;
++import androidx.test.filters.LargeTest;
++import androidx.test.rule.ActivityTestRule;
++import androidx.test.runner.AndroidJUnit4;
++
++import org.hamcrest.Description;
++import org.hamcrest.Matcher;
++import org.hamcrest.TypeSafeMatcher;
++import org.junit.Rule;
++import org.junit.Test;
++import org.junit.runner.RunWith;
++
++@LargeTest
++@RunWith(AndroidJUnit4.class)
++public class VillageTest {
++
++    @Rule
++    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
++
++    @Test
++    public void villageTest() {
++        ViewInteraction appCompatEditText = onView(
++                allOf(withId(R.id.userName),
++                        childAtPosition(
++                                childAtPosition(
++                                        withId(android.R.id.content),
++                                        0),
++                                2),
++                        isDisplayed()));
++        appCompatEditText.perform(click());
++
++        ViewInteraction appCompatEditText2 = onView(
++                allOf(withId(R.id.userName),
++                        childAtPosition(
++                                childAtPosition(
++                                        withId(android.R.id.content),
++                                        0),
++                                2),
++                        isDisplayed()));
++        appCompatEditText2.perform(replaceText("Tommy Trojan"), closeSoftKeyboard());
++
++        ViewInteraction materialButton = onView(
++                allOf(withId(R.id.logIn), withText("Log In"),
++                        childAtPosition(
++                                childAtPosition(
++                                        withId(android.R.id.content),
++                                        0),
++                                3),
++                        isDisplayed()));
++        materialButton.perform(click());
++
++        ViewInteraction appCompatImageButton = onView(
++                allOf(withId(R.id.villageBtn), withContentDescription("Village"),
++                        childAtPosition(
++                                childAtPosition(
++                                        withId(android.R.id.content),
++                                        0),
++                                4),
++                        isDisplayed()));
++        appCompatImageButton.perform(click());
++
++        ViewInteraction textView = onView(
++                allOf(withId(R.id.gymTitle), withText("Village Gym"),
++                        withParent(withParent(withId(android.R.id.content))),
++                        isDisplayed()));
++        textView.check(matches(withText("Village Gym")));
++    }
++
++    private static Matcher<View> childAtPosition(
++            final Matcher<View> parentMatcher, final int position) {
++
++        return new TypeSafeMatcher<View>() {
++            @Override
++            public void describeTo(Description description) {
++                description.appendText("Child at position " + position + " in parent ");
++                parentMatcher.describeTo(description);
++            }
++
++            @Override
++            public boolean matchesSafely(View view) {
++                ViewParent parent = view.getParent();
++                return parent instanceof ViewGroup && parentMatcher.matches(parent)
++                        && view.equals(((ViewGroup) parent).getChildAt(position));
++            }
++        };
++    }
++}
+diff --git a/app/src/main/java/com/example/uscrecapp/BookingAdapter.java b/app/src/main/java/com/example/uscrecapp/BookingAdapter.java
+index 342b300..6d1c14b 100644
+--- a/app/src/main/java/com/example/uscrecapp/BookingAdapter.java
++++ b/app/src/main/java/com/example/uscrecapp/BookingAdapter.java
+@@ -82,7 +82,7 @@ public class BookingAdapter extends ArrayAdapter<String> {
+             @Override
+             public void onClick(View view) {
+                 // remove reservation from user's upcoming reservations
+-                db.collection("users").document(SummaryPage.docName)
++                db.collection("users").document(SummaryPage.message)
+                         .update("reservations", FieldValue.arrayRemove(bookings.get(position)));
+ 
+                 // remove user from gym signedUp array
+@@ -115,14 +115,11 @@ public class BookingAdapter extends ArrayAdapter<String> {
+                         }
+                     }
+                 });
+-
+-
+                 // update UI
+                 Integer index = (Integer) view.getTag();
+                 bookings.remove(index.intValue());
+                 notifyDataSetChanged();
+ 
+-
+             }
+         });
+ 
+diff --git a/app/src/main/java/com/example/uscrecapp/SummaryPage.java b/app/src/main/java/com/example/uscrecapp/SummaryPage.java
+index b79f1f4..0d77850 100644
+--- a/app/src/main/java/com/example/uscrecapp/SummaryPage.java
++++ b/app/src/main/java/com/example/uscrecapp/SummaryPage.java
+@@ -49,7 +49,7 @@ public class SummaryPage extends AppCompatActivity {
+     private Calendar cal = Calendar.getInstance();
+     private Date currTime = new Date();
+     public static String docName;
+-
++    public static String message;
+     public static SummaryPage singleton;
+     public static SummaryPage getInstance(){
+         return singleton;
+@@ -64,7 +64,7 @@ public class SummaryPage extends AppCompatActivity {
+ 
+ 
+         Intent intent = getIntent();
+-        String message = intent.getStringExtra("msg");
++        message = intent.getStringExtra("msg");
+ 
+         // passed a user name
+         // find documentPath
+@@ -72,16 +72,10 @@ public class SummaryPage extends AppCompatActivity {
+             docName = toCamelCase(message);
+             Log.d(TAG, "docName: " + docName);
+         }
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
++        else{
++            Log.d(null, "message was null in summary");
++            docName = "";
++        }
+         // make variables
+         TextView studentName = findViewById(R.id.studentName);
+         TextView studentID = findViewById(R.id.studentID);
+@@ -102,7 +96,6 @@ public class SummaryPage extends AppCompatActivity {
+                     if (document.exists()) {
+                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+ 
+-
+                         // populate user info
+                         Map<String, Object> map = (Map<String, Object>) document.getData();
+                         String name = (String) map.get("name");
+@@ -188,11 +181,13 @@ public class SummaryPage extends AppCompatActivity {
+                 switch(item.getItemId()){
+                     case R.id.home:
+                         Intent homeNav = new Intent(SummaryPage.this, home.class);
++                        homeNav.putExtra("msg", message);
+                         startActivity(homeNav);
+                         break;
+                     case R.id.person:
+-                        Intent sumNav = new Intent(SummaryPage.this, SummaryPage.class);
+-                        startActivity(sumNav);
++//                        Intent sumNav = new Intent(SummaryPage.this, SummaryPage.class);
++//                        sumNav.putExtra("msg", message);
++//                        startActivity(sumNav);
+                         break;
+                 }
+                 return false;
+@@ -229,7 +224,6 @@ public class SummaryPage extends AppCompatActivity {
+                     listView2.setAdapter(adapter2);
+                     adapter2.notifyDataSetChanged();
+ 
+-
+                 } else {
+                     Log.d(TAG, "Current data: null");
+                 }
+diff --git a/app/src/main/java/com/example/uscrecapp/WindowAdapter.java b/app/src/main/java/com/example/uscrecapp/WindowAdapter.java
+new file mode 100644
+index 0000000..15c0983
+--- /dev/null
++++ b/app/src/main/java/com/example/uscrecapp/WindowAdapter.java
+@@ -0,0 +1,80 @@
++package com.example.uscrecapp;
++
++import android.content.Context;
++import android.util.Log;
++import android.view.LayoutInflater;
++import android.view.View;
++import android.view.ViewGroup;
++import android.widget.ArrayAdapter;
++import android.widget.TextView;
++
++import androidx.annotation.NonNull;
++import androidx.annotation.Nullable;
++
++import com.google.android.gms.tasks.OnCompleteListener;
++import com.google.android.gms.tasks.Task;
++import com.google.firebase.firestore.FirebaseFirestore;
++import com.google.firebase.firestore.QueryDocumentSnapshot;
++import com.google.firebase.firestore.QuerySnapshot;
++
++import java.util.ArrayList;
++import java.util.Map;
++
++public class WindowAdapter extends ArrayAdapter<String> {
++    private ArrayList<String> bookings;
++    FirebaseFirestore db = FirebaseFirestore.getInstance();
++    private static final String TAG = "WindowAdapter";
++    private Context context;
++
++    public WindowAdapter(@NonNull Context context, int resource, ArrayList<String> bookings) {
++        super(context, resource, bookings);
++        this.bookings = bookings;
++        this.context = context;
++    }
++
++    @NonNull
++    @Override
++    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
++        Log.d(TAG, String.valueOf(position));
++        int phraseIndex = position;
++        if(convertView == null){
++            convertView = LayoutInflater.from(getContext()).inflate(R.layout.window_view, parent, false);
++        }
++
++        TextView gymName = convertView.findViewById(R.id.gymName);
++        TextView dateAndTime = convertView.findViewById(R.id.dateAndTime);
++
++//        final String[] currGym = new String[1];
++        if (bookings.size() == 0){
++            gymName.setText("No bookings to show");
++            dateAndTime.setText("");
++            return convertView;
++        }
++        // set gym name and day/time
++        db.collection("timeslots").whereEqualTo("slot", bookings.get(position))
++                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
++            @Override
++            public void onComplete(@NonNull Task<QuerySnapshot> task) {
++                if (task.isSuccessful()) {
++                    Integer size = task.getResult().size();
++                    Log.d(TAG, "success " + size);
++                    for (QueryDocumentSnapshot docu : task.getResult()) {
++                        Log.d(TAG, docu.getId() + " => " + docu.getData());
++                        Map<String, Object> map = docu.getData();
++                        String gym = (String) map.get("gymName");
++                        String day = (String) map.get("day");
++                        String time = (String) map.get("time");
++                        gymName.setText(gym);
++                        dateAndTime.setText(day + " " + time);
++//                        currGym[0] = gym;
++                    }
++                } else {
++                    Log.d(TAG, "Error getting documents: ", task.getException());
++                }
++            }
++        });
++
++
++        return convertView;
++    }
++}
+\ No newline at end of file
+diff --git a/app/src/main/java/com/example/uscrecapp/diff.txt b/app/src/main/java/com/example/uscrecapp/diff.txt
+new file mode 100644
+index 0000000..2c365d2
+--- /dev/null
++++ b/app/src/main/java/com/example/uscrecapp/diff.txt
+@@ -0,0 +1,56 @@
++diff --git a/app/src/main/java/com/example/uscrecapp/SummaryPage.java b/app/src/main/java/com/example/uscrecapp/SummaryPage.java
++index e9d6a81..b79f1f4 100644
++--- a/app/src/main/java/com/example/uscrecapp/SummaryPage.java
+++++ b/app/src/main/java/com/example/uscrecapp/SummaryPage.java
++@@ -72,9 +72,16 @@ public class SummaryPage extends AppCompatActivity {
++             docName = toCamelCase(message);
++             Log.d(TAG, "docName: " + docName);
++         }
++-        else{
++-            Log.d(null, "message was null in summary");
++-        }
+++
+++
+++
+++
+++
+++
+++
+++
+++
+++
++         // make variables
++         TextView studentName = findViewById(R.id.studentName);
++         TextView studentID = findViewById(R.id.studentID);
++@@ -95,6 +102,7 @@ public class SummaryPage extends AppCompatActivity {
++                     if (document.exists()) {
++                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
++ 
+++
++                         // populate user info
++                         Map<String, Object> map = (Map<String, Object>) document.getData();
++                         String name = (String) map.get("name");
++@@ -180,13 +188,11 @@ public class SummaryPage extends AppCompatActivity {
++                 switch(item.getItemId()){
++                     case R.id.home:
++                         Intent homeNav = new Intent(SummaryPage.this, home.class);
++-                        homeNav.putExtra("msg", message);
++                         startActivity(homeNav);
++                         break;
++                     case R.id.person:
++-//                        Intent sumNav = new Intent(SummaryPage.this, SummaryPage.class);
++-//                        sumNav.putExtra("msg", message);
++-//                        startActivity(sumNav);
+++                        Intent sumNav = new Intent(SummaryPage.this, SummaryPage.class);
+++                        startActivity(sumNav);
++                         break;
++                 }
++                 return false;
++@@ -223,6 +229,7 @@ public class SummaryPage extends AppCompatActivity {
++                     listView2.setAdapter(adapter2);
++                     adapter2.notifyDataSetChanged();
++ 
+++
++                 } else {
++                     Log.d(TAG, "Current data: null");
++                 }
+diff --git a/app/src/main/java/com/example/uscrecapp/gymSlots.java b/app/src/main/java/com/example/uscrecapp/gymSlots.java
+index 459b657..11408d3 100644
+--- a/app/src/main/java/com/example/uscrecapp/gymSlots.java
++++ b/app/src/main/java/com/example/uscrecapp/gymSlots.java
+@@ -40,6 +40,7 @@ public class gymSlots extends AppCompatActivity{
+     private long capacityTemp = 0;
+     private String selectedDay = "";
+     public static String selectedGym = "Lyon";
++    public static String message;
+ 
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+@@ -47,7 +48,12 @@ public class gymSlots extends AppCompatActivity{
+         setContentView(R.layout.activity_gym_slots);
+ 
+         setGymTitle();
+-
++        Intent intent = getIntent();
++        message = intent.getStringExtra("msg");
++        SummaryPage.docName = message;
++        if (message == null){
++            Log.d(null, "message was null in gym slots");
++        }
+         // initialize variables
+         //Spinner
+         Spinner mySpinner = (Spinner) findViewById(R.id.spinner);
+@@ -102,10 +108,12 @@ public class gymSlots extends AppCompatActivity{
+                 switch(item.getItemId()){
+                     case R.id.home:
+                         Intent gymNav = new Intent(gymSlots.this, home.class);
++                        gymNav.putExtra("msg", message);
+                         startActivity(gymNav);
+                         break;
+                     case R.id.person:
+                         Intent sumNav = new Intent(gymSlots.this, SummaryPage.class);
++                        sumNav.putExtra("msg", message);
+                         startActivity(sumNav);
+                         break;
+                 }
+@@ -318,7 +326,7 @@ public class gymSlots extends AppCompatActivity{
+                                 List<String> signedUp = (List<String>) map.get("signedUp");
+                                 long capacity = (long) map.get("capacity");
+                                 if (signedUp.size() < capacity) {
+-                                    addUsertoSlot(SummaryPage.docName, gymDay + "8-10");
++                                    addUsertoSlot(message, gymDay + "8-10");
+                                 }
+                                 else{
+                                     Toast.makeText(gymSlots.this, "Timeslot is at capacity!",
+@@ -353,7 +361,7 @@ public class gymSlots extends AppCompatActivity{
+                                 List<String> signedUp = (List<String>) map.get("signedUp");
+                                 long capacity = (long) map.get("capacity");
+                                 if (signedUp.size() >= capacity) {
+-                                    addUsertoWaitlist(SummaryPage.docName, gymDay + "8-10");
++                                    addUsertoWaitlist(message, gymDay + "8-10");
+                                 }
+ 
+                             } else {
+@@ -386,7 +394,7 @@ public class gymSlots extends AppCompatActivity{
+                                 List<String> signedUp = (List<String>) map.get("signedUp");
+                                 long capacity = (long) map.get("capacity");
+                                 if (signedUp.size() < capacity) {
+-                                    addUsertoSlot(SummaryPage.docName, gymDay + "10-12");
++                                    addUsertoSlot(message, gymDay + "10-12");
+                                 }
+                                 else{
+                                     Toast.makeText(gymSlots.this, "Timeslot is at capacity!",
+@@ -421,7 +429,7 @@ public class gymSlots extends AppCompatActivity{
+                                 List<String> signedUp = (List<String>) map.get("signedUp");
+                                 long capacity = (long) map.get("capacity");
+                                 if (signedUp.size() >= capacity) {
+-                                    addUsertoWaitlist(SummaryPage.docName, gymDay + "10-12");
++                                    addUsertoWaitlist(message, gymDay + "10-12");
+                                 }
+ 
+                             } else {
+@@ -454,7 +462,7 @@ public class gymSlots extends AppCompatActivity{
+                                 List<String> signedUp = (List<String>) map.get("signedUp");
+                                 long capacity = (long) map.get("capacity");
+                                 if (signedUp.size() < capacity) {
+-                                    addUsertoSlot(SummaryPage.docName, gymDay + "12-2");
++                                    addUsertoSlot(message, gymDay + "12-2");
+                                 }
+                                 else{
+                                     Toast.makeText(gymSlots.this, "Timeslot is at capacity!",
+@@ -489,7 +497,7 @@ public class gymSlots extends AppCompatActivity{
+                                 List<String> signedUp = (List<String>) map.get("signedUp");
+                                 long capacity = (long) map.get("capacity");
+                                 if (signedUp.size() >= capacity) {
+-                                    addUsertoWaitlist(SummaryPage.docName, gymDay + "12-2");
++                                    addUsertoWaitlist(message, gymDay + "12-2");
+                                 }
+ 
+                             } else {
+@@ -521,7 +529,7 @@ public class gymSlots extends AppCompatActivity{
+                                 List<String> signedUp = (List<String>) map.get("signedUp");
+                                 long capacity = (long) map.get("capacity");
+                                 if (signedUp.size() < capacity) {
+-                                    addUsertoSlot(SummaryPage.docName, gymDay + "2-4");
++                                    addUsertoSlot(message, gymDay + "2-4");
+                                 }
+                                 else{
+                                     Toast.makeText(gymSlots.this, "Timeslot is at capacity!",
+@@ -556,7 +564,7 @@ public class gymSlots extends AppCompatActivity{
+                                 List<String> signedUp = (List<String>) map.get("signedUp");
+                                 long capacity = (long) map.get("capacity");
+                                 if (signedUp.size() >= capacity) {
+-                                    addUsertoWaitlist(SummaryPage.docName, gymDay + "2-4");
++                                    addUsertoWaitlist(message, gymDay + "2-4");
+                                 }
+ 
+                             } else {
+@@ -588,7 +596,7 @@ public class gymSlots extends AppCompatActivity{
+                                 List<String> signedUp = (List<String>) map.get("signedUp");
+                                 long capacity = (long) map.get("capacity");
+                                 if (signedUp.size() < capacity) {
+-                                    addUsertoSlot(SummaryPage.docName, gymDay + "4-6");
++                                    addUsertoSlot(message, gymDay + "4-6");
+                                 }
+                                 else{
+                                     Toast.makeText(gymSlots.this, "Timeslot is at capacity!",
+@@ -623,7 +631,7 @@ public class gymSlots extends AppCompatActivity{
+                                 List<String> signedUp = (List<String>) map.get("signedUp");
+                                 long capacity = (long) map.get("capacity");
+                                 if (signedUp.size() >= capacity) {
+-                                    addUsertoWaitlist(SummaryPage.docName, gymDay + "4-6");
++                                    addUsertoWaitlist(message, gymDay + "4-6");
+                                 }
+ 
+                             } else {
+diff --git a/app/src/main/java/com/example/uscrecapp/home.java b/app/src/main/java/com/example/uscrecapp/home.java
+index 034c22c..31834d3 100644
+--- a/app/src/main/java/com/example/uscrecapp/home.java
++++ b/app/src/main/java/com/example/uscrecapp/home.java
+@@ -1,33 +1,89 @@
+ package com.example.uscrecapp;
+ 
+ import androidx.annotation.NonNull;
++import androidx.annotation.Nullable;
+ import androidx.appcompat.app.AppCompatActivity;
+ 
+ import android.content.Intent;
+ import android.os.Bundle;
++import android.util.Log;
+ import android.view.MenuItem;
+ import android.view.View;
++import android.widget.AdapterView;
+ import android.widget.ImageButton;
++import android.widget.ListView;
++import android.widget.TextView;
+ 
+ import com.google.android.material.bottomnavigation.BottomNavigationView;
+ import com.google.android.material.navigation.NavigationBarView;
++import com.google.firebase.firestore.DocumentReference;
++import com.google.firebase.firestore.DocumentSnapshot;
++import com.google.firebase.firestore.EventListener;
++import com.google.firebase.firestore.FirebaseFirestore;
++import com.google.firebase.firestore.FirebaseFirestoreException;
++
++import java.util.ArrayList;
+ 
+ public class home extends AppCompatActivity {
++    private static final String TAG = "MapPage";
++    public static String docName;
++    private static String message;
+ 
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_home);
+ 
++        Intent intent = getIntent();
++        message = intent.getStringExtra("msg");
++
++        // passed a user name
++        // find documentPath
++        if(message != null){
++            docName = toCamelCase(message);
++            Log.d(TAG, "docName: " + docName);
++        }
++        else{
++            Log.d(null, "message was null in home");
++        }
++
++        ListView listView = (ListView) findViewById(R.id.upcomingList);
++        listView.bringToFront();
++        TextView title = (TextView)findViewById(R.id.upcomingTitle);
++        title.bringToFront();
++
++        displayBookings();
++
+         ImageButton village = (ImageButton) findViewById(R.id.villageBtn);
+         ImageButton lyon = (ImageButton) findViewById(R.id.lyonBtn);
+         ImageButton uy = (ImageButton) findViewById(R.id.uyBtn);
+ 
++
++        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
++            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
++                Log.d("clicked",  "the small window");
++                Intent sumNav = new Intent(view.getContext(),  SummaryPage.class);
++                sumNav.putExtra("msg", message);
++                SummaryPage.docName = message;
++                startActivity(sumNav);
++            }
++        });
++        title.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View view) {
++                Log.d("clicked",  "the small window");
++                Intent sumNav = new Intent(view.getContext(),  SummaryPage.class);
++                sumNav.putExtra("msg", message);
++                SummaryPage.docName = message;
++                startActivity(sumNav);
++            }
++        });
+         village.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 Intent gymNav = new Intent(home.this, gymSlots.class);
+                 gymSlots.selectedGym = "village";
++                gymNav.putExtra("msg", message);
+                 startActivity(gymNav);
+             }
+         });
+@@ -37,6 +93,7 @@ public class home extends AppCompatActivity {
+             public void onClick(View view) {
+                 Intent gymNav = new Intent(home.this, gymSlots.class);
+                 gymSlots.selectedGym = "lyon";
++                gymNav.putExtra("msg", message);
+                 startActivity(gymNav);
+             }
+         });
+@@ -46,6 +103,7 @@ public class home extends AppCompatActivity {
+             public void onClick(View view) {
+                 Intent gymNav = new Intent(home.this, gymSlots.class);
+                 gymSlots.selectedGym = "uy";
++                gymNav.putExtra("msg", message);
+                 startActivity(gymNav);
+             }
+         });
+@@ -60,15 +118,63 @@ public class home extends AppCompatActivity {
+                 switch(item.getItemId()){
+                     case R.id.home:
+                         Intent homeNav = new Intent(home.this, home.class);
++                        homeNav.putExtra("msg", message);
+                         startActivity(homeNav);
+                         break;
+                     case R.id.person:
+                         Intent sumNav = new Intent(home.this, SummaryPage.class);
++                        sumNav.putExtra("msg", message);
++                        SummaryPage.docName = message;
+                         startActivity(sumNav);
+                         break;
+                 }
+                 return false;
+             }
+         });
++    } //oncreate
++    public void displayBookings(){
++        FirebaseFirestore db = FirebaseFirestore.getInstance();
++        final DocumentReference newDocRef = db.collection("users").document(docName);
++        newDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
++            @Override
++            public void onEvent(@Nullable DocumentSnapshot snapshot,
++                                @Nullable FirebaseFirestoreException e) {
++                if (e != null) {
++                    Log.w(TAG, "Listen failed.", e);
++                    return;
++                }
++                if (snapshot.exists()) {
++                    Log.d(TAG, "Current data: " + snapshot.getData());
++                    ArrayList<String> updatedRes = (ArrayList<String>) snapshot.getData().get("reservations");
++                    WindowAdapter adapter = new WindowAdapter(getApplicationContext(), R.layout.window_view, updatedRes);
++                    ListView listView = (ListView) findViewById(R.id.upcomingList);
++                    listView.setAdapter(adapter);
++                    adapter.notifyDataSetChanged();
++                } else {
++
++                    Log.d(TAG, "Current data: null");
++                    Log.d(docName, "Name");
++                }
++            }
++        });
++    }
++    private static String toCamelCase(String s){
++        String[] parts = s.split(" ");
++        String camelCaseString = "";
++        int counter = 0;
++        for (String part : parts){
++            camelCaseString = camelCaseString + toProperCase(part, counter);
++            counter++;
++        }
++        return camelCaseString;
+     }
+-}
+\ No newline at end of file
++    private static String toProperCase(String s, int count) {
++        if(count == 0){
++            return s.toLowerCase();
++        }
++
++        return s.substring(0, 1).toUpperCase() +
++                s.substring(1).toLowerCase();
++    }
++
++}
+diff --git a/app/src/main/res/drawable/title_format.xml b/app/src/main/res/drawable/title_format.xml
+new file mode 100644
+index 0000000..27c63c6
+--- /dev/null
++++ b/app/src/main/res/drawable/title_format.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="utf-8"?>
++<shape xmlns:android="http://schemas.android.com/apk/res/android">
++    <padding android:left="10dp" android:right="10dp" android:top="5dp"/>
++    <stroke android:width="1dp" android:color="#CCCCCC"/>
++    <solid
++        android:color="@color/white" />
++</shape>
+\ No newline at end of file
+diff --git a/app/src/main/res/drawable/window_format.xml b/app/src/main/res/drawable/window_format.xml
+new file mode 100644
+index 0000000..6e37119
+--- /dev/null
++++ b/app/src/main/res/drawable/window_format.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="utf-8"?>
++<shape xmlns:android="http://schemas.android.com/apk/res/android">
++    <padding android:left="10dp" android:right="10dp" android:top="10dp" android:bottom="10dp"/>
++    <stroke android:width="1dp" android:color="#CCCCCC"/>
++    <solid
++    android:color="@color/white" />
++</shape>
+\ No newline at end of file
+diff --git a/app/src/main/res/layout/activity_home.xml b/app/src/main/res/layout/activity_home.xml
+index b8c8609..698fbde 100644
+--- a/app/src/main/res/layout/activity_home.xml
++++ b/app/src/main/res/layout/activity_home.xml
+@@ -6,6 +6,51 @@
+     android:layout_height="match_parent"
+     tools:context=".home">
+ 
++    <TextView
++        android:id="@+id/upcomingTitle"
++        android:layout_height="28dp"
++        android:layout_width="145dp"
++        app:layout_constraintLeft_toLeftOf="parent"
++        app:layout_constraintTop_toTopOf="parent"
++        android:layout_marginStart="20dp"
++        android:background="@drawable/title_format"
++        android:layout_marginTop="20dp"
++        android:text="Upcoming Bookings"
++        android:textSize="10sp"
++        android:textStyle="bold"
++        android:textColor="#AF0500"
++        android:gravity="top">
++    </TextView>
++    <ListView
++        android:id="@+id/upcomingList"
++        android:background="@drawable/window_format"
++        app:layout_constraintLeft_toLeftOf="@id/upcomingTitle"
++        app:layout_constraintTop_toBottomOf="@id/upcomingTitle"
++        android:backgroundTint="@color/white"
++        android:layout_marginTop="0dp"
++        android:layout_height="88dp"
++        android:layout_width="145dp"
++        >
++    </ListView>
++<!--    <ImageView-->
++<!--        android:background="@drawable/window_view"-->
++<!--        app:layout_constraintLeft_toLeftOf="parent"-->
++<!--        app:layout_constraintTop_toTopOf="parent"-->
++<!--        android:layout_marginStart="20dp"-->
++<!--        android:backgroundTint="@color/white"-->
++<!--        android:layout_marginTop="20dp"-->
++<!--        android:layout_height="155dp"-->
++<!--        android:layout_width="372dp"-->
++<!--        android:id="@+id/upcomingBackground">-->
++<!--    </ImageView>-->
++    <!--            android:layout_marginTop="20dp"-->
++    <!--            android:text="Upcoming Appointments"-->
++    <!--            android:layout_height="155dp"-->
++    <!--            android:layout_width="372dp"-->
++
++
++<!--            android:layout_height="88dp"-->
++<!--            android:layout_width="145dp"-->
+     <ImageView
+         android:id="@+id/imageView3"
+         android:layout_width="wrap_content"
+diff --git a/app/src/main/res/layout/activity_map.xml b/app/src/main/res/layout/activity_map.xml
+deleted file mode 100644
+index 31e93ae..0000000
+--- a/app/src/main/res/layout/activity_map.xml
++++ /dev/null
+@@ -1,77 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+-    xmlns:app="http://schemas.android.com/apk/res-auto"
+-    xmlns:tools="http://schemas.android.com/tools"
+-    android:layout_width="match_parent"
+-    android:layout_height="match_parent"
+-    android:orientation="vertical">
+-<!--        <TextView-->
+-<!--            android:id="@+id/llabel"-->
+-<!--            android:layout_width="wrap_content"-->
+-<!--            android:layout_height="wrap_content"-->
+-<!--            android:textColor="@color/black"-->
+-<!--            android:textSize="12sp"-->
+-<!--            android:text="@string/llabel"-->
+-<!--            android:layout_above="@+id/lyon"/>-->
+-        <ImageButton
+-            android:id="@+id/lyon"
+-            android:background="@android:color/transparent"
+-            android:layout_width="60dp"
+-            android:layout_height="60dp"
+-            android:adjustViewBounds="true"
+-            android:scaleType="fitCenter"
+-            android:contentDescription="@string/swim"
+-            android:onClick="goGym"
+-            android:src="@drawable/pin" />
+-
+-
+-        <ImageButton
+-            android:id="@+id/swim"
+-            android:background="@android:color/transparent"
+-            android:layout_width="60dp"
+-            android:layout_height="60dp"
+-            android:adjustViewBounds="true"
+-            android:scaleType="fitCenter"
+-            android:contentDescription="@string/swim"
+-            android:src="@drawable/pin"
+-            android:onClick="goGym"
+-            />
+-
+-        <ImageButton
+-            android:id="@+id/village"
+-            android:background="@android:color/transparent"
+-            android:layout_width="60dp"
+-            android:layout_height="60dp"
+-            android:adjustViewBounds="true"
+-            android:scaleType="fitCenter"
+-            android:contentDescription="@string/swim"
+-            android:onClick="goGym"
+-            android:src="@drawable/pin" />
+-
+-
+-        <ImageView
+-            android:id="@+id/imageView"
+-            android:layout_width="wrap_content"
+-            android:layout_height="wrap_content"
+-            android:contentDescription="@string/swim"
+-            android:scaleType="center"
+-            app:srcCompat="@drawable/map4" />
+-
+-<!--        <RelativeLayout-->
+-<!--            android:id="@+id/relativeLayout"-->
+-<!--            android:layout_width="match_parent"-->
+-<!--            android:layout_height="match_parent"-->
+-<!--            android:layout_alignParentBottom="true"-->
+-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+-<!--            app:layout_constraintEnd_toEndOf="parent"-->
+-<!--            app:layout_constraintStart_toStartOf="parent">-->
+-
+-<!--                <com.google.android.material.bottomnavigation.BottomNavigationView-->
+-<!--                    android:id="@+id/bottomNav"-->
+-<!--                    android:layout_width="match_parent"-->
+-<!--                    android:layout_height="60dp"-->
+-<!--                    android:layout_marginBottom="0dp"-->
+-<!--                    android:background="#E8E7E7"-->
+-<!--                    app:menu="@menu/bottom_nav_menu" />-->
+-<!--        </RelativeLayout>-->
+-</FrameLayout>
+diff --git a/app/src/main/res/layout/window_view.xml b/app/src/main/res/layout/window_view.xml
+new file mode 100644
+index 0000000..9af59b3
+--- /dev/null
++++ b/app/src/main/res/layout/window_view.xml
+@@ -0,0 +1,31 @@
++<?xml version="1.0" encoding="utf-8"?>
++<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    android:layout_weight="0"
++    android:paddingTop="0sp"
++    android:orientation="vertical"
++    android:background="@drawable/window_format">
++
++            <TextView
++                android:id="@+id/gymName"
++                android:layout_width="match_parent"
++                android:layout_height="20dp"
++                android:gravity="center_vertical"
++                android:paddingLeft="9sp"
++                android:text="@string/gym_name"
++                android:textStyle="bold"
++                android:textColor="#040404"
++                android:textSize="10sp" />
++
++            <TextView
++                android:id="@+id/dateAndTime"
++                android:layout_width="match_parent"
++                android:layout_height="20dp"
++                android:gravity="center_vertical"
++                android:paddingLeft="9sp"
++                android:text="@string/date_and_time"
++                android:textSize="10sp"
++                android:textColor="#000000" />
++
++</LinearLayout>
+\ No newline at end of file
