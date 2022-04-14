@@ -115,13 +115,10 @@ public class BookingAdapter extends ArrayAdapter<String> {
                         }
                     }
                 });
-
-
                 // update UI
                 Integer index = (Integer) view.getTag();
                 bookings.remove(index.intValue());
                 notifyDataSetChanged();
-
 
             }
         });

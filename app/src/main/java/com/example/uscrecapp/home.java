@@ -52,6 +52,7 @@ public class home extends AppCompatActivity {
 
         ListView listView = (ListView) findViewById(R.id.upcomingList);
         listView.bringToFront();
+        TextView title = (TextView)findViewById(R.id.upcomingTitle);
 
         displayBookings();
         TextView title = (TextView) findViewById(R.id.upcomingTitle);
@@ -63,6 +64,16 @@ public class home extends AppCompatActivity {
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d("clicked",  "the small window");
+                Intent sumNav = new Intent(view.getContext(),  SummaryPage.class);
+                sumNav.putExtra("msg", message);
+                SummaryPage.docName = message;
+                startActivity(sumNav);
+            }
+        });
+        title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 Log.d("clicked",  "the small window");
                 Intent sumNav = new Intent(view.getContext(),  SummaryPage.class);
                 sumNav.putExtra("msg", message);
