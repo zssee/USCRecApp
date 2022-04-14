@@ -55,6 +55,14 @@ public class SummaryPage extends AppCompatActivity {
         return singleton;
     }
 
+    public String getDocName(){
+        return docName;
+    }
+
+    public void setDocName(String name){
+        docName = name;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -178,6 +186,7 @@ public class SummaryPage extends AppCompatActivity {
         });
 
         displayBookings();
+        printString();
 
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNav);
@@ -198,6 +207,10 @@ public class SummaryPage extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    public void printString(){
+        System.out.println("Summary page loaded");
     }
 
 
@@ -253,7 +266,7 @@ public class SummaryPage extends AppCompatActivity {
         return 0;
     }
 
-    private static String toCamelCase(String s){
+    public static String toCamelCase(String s){
         String[] parts = s.split(" ");
         String camelCaseString = "";
         int counter = 0;
