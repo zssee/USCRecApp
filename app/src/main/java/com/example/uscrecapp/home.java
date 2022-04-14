@@ -53,10 +53,11 @@ public class home extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.upcomingList);
         listView.bringToFront();
         TextView title = (TextView)findViewById(R.id.upcomingTitle);
+        title.bringToFront();
 
         displayBookings();
-        TextView title = (TextView) findViewById(R.id.upcomingTitle);
-        title.bringToFront();
+
+
         ImageButton village = (ImageButton) findViewById(R.id.villageBtn);
         ImageButton lyon = (ImageButton) findViewById(R.id.lyonBtn);
         ImageButton uy = (ImageButton) findViewById(R.id.uyBtn);

@@ -40,7 +40,7 @@ public class gymSlots extends AppCompatActivity{
     private long capacityTemp = 0;
     private String selectedDay = "";
     public static String selectedGym = "Lyon";
-    private String message;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +48,7 @@ public class gymSlots extends AppCompatActivity{
 
         setGymTitle();
         Intent intent = getIntent();
-        message = intent.getStringExtra("msg");
+        String message = intent.getStringExtra("msg");
         if (message == null){
             Log.d(null, "message was null in gym slots");
         }
@@ -112,7 +112,6 @@ public class gymSlots extends AppCompatActivity{
                     case R.id.person:
                         Intent sumNav = new Intent(gymSlots.this, SummaryPage.class);
                         sumNav.putExtra("msg", message);
-                        SummaryPage.docName = message;
                         startActivity(sumNav);
                         break;
                 }
@@ -197,6 +196,7 @@ public class gymSlots extends AppCompatActivity{
                                 else {
                                     capacityView.setText("Capacity: " + Integer.toString(signedUp.size()) + "/" + Long.toString(capacity));
                                 }
+
                             }
                             else if (time.equals("4:00pm-6:00pm")) {
                                 TextView capacityView = findViewById(R.id.capText4);
@@ -324,7 +324,7 @@ public class gymSlots extends AppCompatActivity{
                                 List<String> signedUp = (List<String>) map.get("signedUp");
                                 long capacity = (long) map.get("capacity");
                                 if (signedUp.size() < capacity) {
-                                    addUsertoSlot(message, gymDay + "8-10");
+                                    addUsertoSlot(SummaryPage.docName, gymDay + "8-10");
                                 }
                                 else{
                                     Toast.makeText(gymSlots.this, "Timeslot is at capacity!",
@@ -359,7 +359,7 @@ public class gymSlots extends AppCompatActivity{
                                 List<String> signedUp = (List<String>) map.get("signedUp");
                                 long capacity = (long) map.get("capacity");
                                 if (signedUp.size() >= capacity) {
-                                    addUsertoWaitlist(message, gymDay + "8-10");
+                                    addUsertoWaitlist(SummaryPage.docName, gymDay + "8-10");
                                 }
 
                             } else {
@@ -392,7 +392,7 @@ public class gymSlots extends AppCompatActivity{
                                 List<String> signedUp = (List<String>) map.get("signedUp");
                                 long capacity = (long) map.get("capacity");
                                 if (signedUp.size() < capacity) {
-                                    addUsertoSlot(message, gymDay + "10-12");
+                                    addUsertoSlot(SummaryPage.docName, gymDay + "10-12");
                                 }
                                 else{
                                     Toast.makeText(gymSlots.this, "Timeslot is at capacity!",
@@ -427,7 +427,7 @@ public class gymSlots extends AppCompatActivity{
                                 List<String> signedUp = (List<String>) map.get("signedUp");
                                 long capacity = (long) map.get("capacity");
                                 if (signedUp.size() >= capacity) {
-                                    addUsertoWaitlist(message, gymDay + "10-12");
+                                    addUsertoWaitlist(SummaryPage.docName, gymDay + "10-12");
                                 }
 
                             } else {
@@ -460,7 +460,7 @@ public class gymSlots extends AppCompatActivity{
                                 List<String> signedUp = (List<String>) map.get("signedUp");
                                 long capacity = (long) map.get("capacity");
                                 if (signedUp.size() < capacity) {
-                                    addUsertoSlot(message, gymDay + "12-2");
+                                    addUsertoSlot(SummaryPage.docName, gymDay + "12-2");
                                 }
                                 else{
                                     Toast.makeText(gymSlots.this, "Timeslot is at capacity!",
@@ -495,7 +495,7 @@ public class gymSlots extends AppCompatActivity{
                                 List<String> signedUp = (List<String>) map.get("signedUp");
                                 long capacity = (long) map.get("capacity");
                                 if (signedUp.size() >= capacity) {
-                                    addUsertoWaitlist(message, gymDay + "12-2");
+                                    addUsertoWaitlist(SummaryPage.docName, gymDay + "12-2");
                                 }
 
                             } else {
@@ -527,7 +527,7 @@ public class gymSlots extends AppCompatActivity{
                                 List<String> signedUp = (List<String>) map.get("signedUp");
                                 long capacity = (long) map.get("capacity");
                                 if (signedUp.size() < capacity) {
-                                    addUsertoSlot(message, gymDay + "2-4");
+                                    addUsertoSlot(SummaryPage.docName, gymDay + "2-4");
                                 }
                                 else{
                                     Toast.makeText(gymSlots.this, "Timeslot is at capacity!",
@@ -562,7 +562,7 @@ public class gymSlots extends AppCompatActivity{
                                 List<String> signedUp = (List<String>) map.get("signedUp");
                                 long capacity = (long) map.get("capacity");
                                 if (signedUp.size() >= capacity) {
-                                    addUsertoWaitlist(message, gymDay + "2-4");
+                                    addUsertoWaitlist(SummaryPage.docName, gymDay + "2-4");
                                 }
 
                             } else {
@@ -594,7 +594,7 @@ public class gymSlots extends AppCompatActivity{
                                 List<String> signedUp = (List<String>) map.get("signedUp");
                                 long capacity = (long) map.get("capacity");
                                 if (signedUp.size() < capacity) {
-                                    addUsertoSlot(message, gymDay + "4-6");
+                                    addUsertoSlot(SummaryPage.docName, gymDay + "4-6");
                                 }
                                 else{
                                     Toast.makeText(gymSlots.this, "Timeslot is at capacity!",
@@ -629,7 +629,7 @@ public class gymSlots extends AppCompatActivity{
                                 List<String> signedUp = (List<String>) map.get("signedUp");
                                 long capacity = (long) map.get("capacity");
                                 if (signedUp.size() >= capacity) {
-                                    addUsertoWaitlist(message, gymDay + "4-6");
+                                    addUsertoWaitlist(SummaryPage.docName, gymDay + "4-6");
                                 }
 
                             } else {
