@@ -112,6 +112,7 @@ public class gymSlots extends AppCompatActivity{
                     case R.id.person:
                         Intent sumNav = new Intent(gymSlots.this, SummaryPage.class);
                         sumNav.putExtra("msg", message);
+                        SummaryPage.docName = message;
                         startActivity(sumNav);
                         break;
                 }
@@ -196,7 +197,6 @@ public class gymSlots extends AppCompatActivity{
                                 else {
                                     capacityView.setText("Capacity: " + Integer.toString(signedUp.size()) + "/" + Long.toString(capacity));
                                 }
-
                             }
                             else if (time.equals("4:00pm-6:00pm")) {
                                 TextView capacityView = findViewById(R.id.capText4);

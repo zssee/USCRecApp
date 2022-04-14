@@ -66,6 +66,7 @@ public class home extends AppCompatActivity {
                 Log.d("clicked",  "the small window");
                 Intent sumNav = new Intent(view.getContext(),  SummaryPage.class);
                 sumNav.putExtra("msg", message);
+                SummaryPage.docName = message;
                 startActivity(sumNav);
             }
         });
@@ -109,10 +110,13 @@ public class home extends AppCompatActivity {
                 switch(item.getItemId()){
                     case R.id.home:
                         Intent homeNav = new Intent(home.this, home.class);
+                        homeNav.putExtra("msg", message);
                         startActivity(homeNav);
                         break;
                     case R.id.person:
                         Intent sumNav = new Intent(home.this, SummaryPage.class);
+                        sumNav.putExtra("msg", message);
+                        SummaryPage.docName = message;
                         startActivity(sumNav);
                         break;
                 }
