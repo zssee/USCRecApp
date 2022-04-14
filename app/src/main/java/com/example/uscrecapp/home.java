@@ -147,7 +147,7 @@ public class home extends AppCompatActivity {
                     Log.w(TAG, "Listen failed.", e);
                     return;
                 }
-                if (snapshot != null && snapshot.exists()) {
+                if (snapshot.exists()) {
                     Log.d(TAG, "Current data: " + snapshot.getData());
                     ArrayList<String> updatedRes = (ArrayList<String>) snapshot.getData().get("reservations");
                     WindowAdapter adapter = new WindowAdapter(getApplicationContext(), R.layout.window_view, updatedRes);
@@ -155,6 +155,7 @@ public class home extends AppCompatActivity {
                     listView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
                 } else {
+
                     Log.d(TAG, "Current data: null");
                     Log.d(docName, "Name");
                 }

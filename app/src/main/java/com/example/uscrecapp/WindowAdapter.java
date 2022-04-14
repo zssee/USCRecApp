@@ -44,8 +44,12 @@ public class WindowAdapter extends ArrayAdapter<String> {
         TextView gymName = convertView.findViewById(R.id.gymName);
         TextView dateAndTime = convertView.findViewById(R.id.dateAndTime);
 
-        final String[] currGym = new String[1];
-
+//        final String[] currGym = new String[1];
+        if (bookings.size() == 0){
+            gymName.setText("No bookings to show");
+            dateAndTime.setText("");
+            return convertView;
+        }
         // set gym name and day/time
         db.collection("timeslots").whereEqualTo("slot", bookings.get(position))
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -54,10 +58,6 @@ public class WindowAdapter extends ArrayAdapter<String> {
                 if (task.isSuccessful()) {
                     Integer size = task.getResult().size();
                     Log.d(TAG, "success " + size);
-                    if (size == 0){
-                        gymName.setText("None to show");
-                        dateAndTime.setText(" ");
-                    }
                     for (QueryDocumentSnapshot docu : task.getResult()) {
                         Log.d(TAG, docu.getId() + " => " + docu.getData());
                         Map<String, Object> map = docu.getData();
@@ -66,13 +66,14 @@ public class WindowAdapter extends ArrayAdapter<String> {
                         String time = (String) map.get("time");
                         gymName.setText(gym);
                         dateAndTime.setText(day + " " + time);
-                        currGym[0] = gym;
+//                        currGym[0] = gym;
                     }
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
                 }
             }
         });
+
 
         return convertView;
     }

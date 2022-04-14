@@ -52,6 +52,9 @@ public class gymSlots extends AppCompatActivity{
         if (message == null){
             Log.d(null, "message was null in gym slots");
         }
+        else{
+            SummaryPage.docName = message;
+        }
         // initialize variables
         //Spinner
         Spinner mySpinner = (Spinner) findViewById(R.id.spinner);
