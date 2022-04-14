@@ -72,16 +72,9 @@ public class SummaryPage extends AppCompatActivity {
             docName = toCamelCase(message);
             Log.d(TAG, "docName: " + docName);
         }
-
-
-
-
-
-
-
-
-
-
+        else{
+            Log.d(null, "message was null in summary");
+        }
         // make variables
         TextView studentName = findViewById(R.id.studentName);
         TextView studentID = findViewById(R.id.studentID);
@@ -101,7 +94,6 @@ public class SummaryPage extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-
 
                         // populate user info
                         Map<String, Object> map = (Map<String, Object>) document.getData();
@@ -188,11 +180,13 @@ public class SummaryPage extends AppCompatActivity {
                 switch(item.getItemId()){
                     case R.id.home:
                         Intent homeNav = new Intent(SummaryPage.this, home.class);
+                        homeNav.putExtra("msg", message);
                         startActivity(homeNav);
                         break;
                     case R.id.person:
-                        Intent sumNav = new Intent(SummaryPage.this, SummaryPage.class);
-                        startActivity(sumNav);
+//                        Intent sumNav = new Intent(SummaryPage.this, SummaryPage.class);
+//                        sumNav.putExtra("msg", message);
+//                        startActivity(sumNav);
                         break;
                 }
                 return false;
@@ -228,7 +222,6 @@ public class SummaryPage extends AppCompatActivity {
                     ListView listView2 = (ListView) findViewById(R.id.previousList);
                     listView2.setAdapter(adapter2);
                     adapter2.notifyDataSetChanged();
-
 
                 } else {
                     Log.d(TAG, "Current data: null");

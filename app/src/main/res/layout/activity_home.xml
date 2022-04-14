@@ -6,6 +6,54 @@
     android:layout_height="match_parent"
     tools:context=".home">
 
+    <TextView
+        android:id="@+id/upcomingTitle"
+        android:layout_width="372dp"
+        android:layout_height="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="20dp"
+
+        android:tint="@color/white"
+        android:layout_marginTop="20dp"
+        android:text="Upcoming Bookings"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:gravity="center">
+    </TextView>
+    <ListView
+        android:id="@+id/upcomingList"
+        android:background="@drawable/smallwindow"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/upcomingTitle"
+        android:layout_marginStart="20dp"
+        android:backgroundTint="@color/white"
+        android:layout_marginTop="20dp"
+        android:layout_height="155dp"
+        android:layout_width="372dp"
+
+        >
+    </ListView>
+<!--    <ImageView-->
+<!--        android:background="@drawable/smallwindow"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        android:layout_marginStart="20dp"-->
+<!--        android:backgroundTint="@color/white"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:layout_height="155dp"-->
+<!--        android:layout_width="372dp"-->
+<!--        android:id="@+id/upcomingBackground">-->
+<!--    </ImageView>-->
+    <!--            android:layout_marginTop="20dp"-->
+    <!--            android:text="Upcoming Appointments"-->
+    <!--            android:layout_height="155dp"-->
+    <!--            android:layout_width="372dp"-->
+
+
+    <!--        android:layout_height="88dp"-->
+    <!--        android:layout_width="145dp"-->
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="wrap_content"

@@ -47,7 +47,11 @@ public class gymSlots extends AppCompatActivity{
         setContentView(R.layout.activity_gym_slots);
 
         setGymTitle();
-
+        Intent intent = getIntent();
+        String message = intent.getStringExtra("msg");
+        if (message == null){
+            Log.d(null, "message was null in gym slots");
+        }
         // initialize variables
         //Spinner
         Spinner mySpinner = (Spinner) findViewById(R.id.spinner);
@@ -102,10 +106,12 @@ public class gymSlots extends AppCompatActivity{
                 switch(item.getItemId()){
                     case R.id.home:
                         Intent gymNav = new Intent(gymSlots.this, home.class);
+                        gymNav.putExtra("msg", message);
                         startActivity(gymNav);
                         break;
                     case R.id.person:
                         Intent sumNav = new Intent(gymSlots.this, SummaryPage.class);
+                        sumNav.putExtra("msg", message);
                         startActivity(sumNav);
                         break;
                 }
