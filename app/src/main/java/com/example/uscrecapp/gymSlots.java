@@ -38,7 +38,7 @@ public class gymSlots extends AppCompatActivity{
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private int signedUpTemp = 0;
     private long capacityTemp = 0;
-    private String selectedDay = "";
+    public String selectedDay = "";
     public static String selectedGym = "Lyon";
 
     @Override
@@ -214,6 +214,7 @@ public class gymSlots extends AppCompatActivity{
     }
 
     public void addUsertoSlot(String name, String timeslot){
+
         DocumentReference docRef = db.collection("timeslots").document(timeslot);
         docRef.update("signedUp", FieldValue.arrayUnion(name))
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -233,7 +234,9 @@ public class gymSlots extends AppCompatActivity{
                     }
                 });
 
+
         changeCapacityText(timeslot);
+
 
     }
 
@@ -286,7 +289,7 @@ public class gymSlots extends AppCompatActivity{
         }
     }
 
-    private void setUpButtons() {
+    public void setUpButtons() {
         //buttons
         Button reserve8 = findViewById(R.id.reserve8);
         Button reserve10 = findViewById(R.id.reserve10);
@@ -333,6 +336,8 @@ public class gymSlots extends AppCompatActivity{
                         }
                     }
                 });
+
+                System.out.print("Added successfully!");
             }
         });
 
@@ -364,6 +369,7 @@ public class gymSlots extends AppCompatActivity{
                         }
                     }
                 });
+                System.out.print("Added successfully!");
             }
         });
 
@@ -401,6 +407,7 @@ public class gymSlots extends AppCompatActivity{
                         }
                     }
                 });
+                System.out.print("Added successfully!");
             }
         });
 
@@ -432,6 +439,7 @@ public class gymSlots extends AppCompatActivity{
                         }
                     }
                 });
+                System.out.print("Added successfully!");
             }
         });
 
@@ -469,6 +477,7 @@ public class gymSlots extends AppCompatActivity{
                         }
                     }
                 });
+                System.out.print("Added successfully!");
             }
         });
 
@@ -500,6 +509,7 @@ public class gymSlots extends AppCompatActivity{
                         }
                     }
                 });
+                System.out.print("Added successfully!");
             }
         });
 
@@ -536,6 +546,7 @@ public class gymSlots extends AppCompatActivity{
                         }
                     }
                 });
+                System.out.print("Added successfully!");
             }
         });
 
@@ -567,6 +578,7 @@ public class gymSlots extends AppCompatActivity{
                         }
                     }
                 });
+                System.out.print("Added successfully!");
             }
         });
 
@@ -603,6 +615,7 @@ public class gymSlots extends AppCompatActivity{
                         }
                     }
                 });
+                System.out.print("Added successfully!");
             }
         });
 
@@ -634,6 +647,7 @@ public class gymSlots extends AppCompatActivity{
                         }
                     }
                 });
+                System.out.print("Added successfully!");
             }
         });
 
