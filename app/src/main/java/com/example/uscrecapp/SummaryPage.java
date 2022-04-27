@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -49,6 +50,10 @@ public class SummaryPage extends AppCompatActivity {
     private Calendar cal = Calendar.getInstance();
     private Date currTime = new Date();
     public static String docName;
+    Handler handler = new Handler();
+    Runnable runnable;
+    int delay = 10000;
+    boolean displayed10 = false;
 
     public static SummaryPage singleton;
     public static SummaryPage getInstance(){
@@ -80,14 +85,6 @@ public class SummaryPage extends AppCompatActivity {
             docName = toCamelCase(message);
             Log.d(TAG, "docName: " + docName);
         }
-
-
-
-
-
-
-
-
 
 
         // make variables
@@ -207,6 +204,101 @@ public class SummaryPage extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    // checking for upcoming appointment
+    @Override
+    protected void onResume() {
+        handler.postDelayed(runnable = new Runnable() {
+            public void run() {
+                handler.postDelayed(runnable, delay);
+
+                // initialize db
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                // retrieve contents from document
+                DocumentReference docRef = db.collection("users").document(docName);
+                String finalDocName = docName;
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+
+
+                                // populate user info
+                                Map<String, Object> map = (Map<String, Object>) document.getData();
+
+                                ArrayList<String> group = (ArrayList<String>) document.get("reservations");
+                                // if group.size() > 0, check if the timestamps for each of the bookings
+                                // have passed yet
+                                if(group.size() > 0){
+
+                                    Log.d(TAG, "starting timestamp comparison...");
+                                    // iterate through each time stamp and compare to current time
+                                    for(int i = 0; i < group.size(); i++){
+                                        int finalI = i;
+                                        db.collection("timeslots").whereEqualTo("slot", group.get(i))
+                                                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    Log.d(TAG, "success " + task.getResult().size());
+
+                                                    for (QueryDocumentSnapshot docu : task.getResult()) {
+                                                        Log.d(TAG, docu.getId() + " =>! " + docu.getData());
+                                                        Map<String, Object> map = docu.getData();
+                                                        Timestamp gymTime = (Timestamp) map.get("timestamp");
+                                                        Date gymDate = gymTime.toDate();
+                                                        Long gTime = gymDate.getTime();
+                                                        Long now = currTime.getTime();
+
+                                                        // if timestamp has passed add to previous bookings array
+                                                        if((now - gTime <= 600000) && (!displayed10)){
+                                                            Log.d(TAG, "10 minutes");
+
+                                                            Toast.makeText(SummaryPage.this, "You have an upcoming gym appointment in 10 minutes.",
+                                                                    Toast.LENGTH_LONG).show();
+                                                            displayed10 = true;
+                                                            
+                                                            break;
+//
+                                                        }
+
+                                                    }
+
+                                                } else {
+                                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+
+                            } else {
+                                Toast.makeText(SummaryPage.this, "No such document",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        } else {
+                            Toast.makeText(SummaryPage.this, "get failed",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+
+
+
+            }
+        }, delay);
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        handler.removeCallbacks(runnable); //stop handler when activity not visible super.onPause();
     }
 
     public void printString(){
