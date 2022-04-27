@@ -295,11 +295,11 @@ public class SummaryPage extends AppCompatActivity {
         super.onResume();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        handler.removeCallbacks(runnable); //stop handler when activity not visible super.onPause();
-    }
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        handler.removeCallbacks(runnable); //stop handler when activity not visible super.onPause();
+//    }
 
     public void printString(){
         System.out.println("Summary page loaded");
