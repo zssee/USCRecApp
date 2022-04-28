@@ -278,14 +278,11 @@ public class gymSlots extends AppCompatActivity{
     }
 
     private String shortenDay(String day){
-        if(day.equals("Monday")){
+        if(day.equals("Wednesday") || day.equals("Saturday")){
             return day.substring(0,3);
-        }
-        else if(day.equals("Tuesday")){
-            return day.substring(0,4);
         }
         else{
-            return day.substring(0,3);
+            return day.substring(0,day.length()-3);
         }
     }
 
