@@ -97,7 +97,7 @@ public class BookingAdapter extends ArrayAdapter<String> {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                                Log.d(TAG, "DocumentSnapshot data.txt: " + document.getData());
                                 Map<String, Object> map = (Map<String, Object>) document.getData();
                                 ArrayList<String> signedUp = (ArrayList<String>) document.get("signedUp");
                                 ArrayList<String> waitList = (ArrayList<String>) document.get("waitlist");

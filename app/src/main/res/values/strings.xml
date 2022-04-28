@@ -1,4 +1,5 @@
 <resources>
+
     <string name="app_name">USCRecApp</string>
     <string name="title_activity_gym_slots">gymSlots</string>
     <string name="userphoto">userPhoto</string>

@@ -24,7 +24,24 @@ import java.util.Map;
 
 public class LogIn extends AppCompatActivity {
     private static final String TAG = "LogIn";
+    public static String toCamelCase(String s){
+        String[] parts = s.split(" ");
+        String camelCaseString = "";
+        int counter = 0;
+        for (String part : parts){
+            camelCaseString = camelCaseString + toProperCase(part, counter);
+            counter++;
+        }
+        return camelCaseString;
+    }
+    private static String toProperCase(String s, int count) {
+        if(count == 0){
+            return s.toLowerCase();
+        }
 
+        return s.substring(0, 1).toUpperCase() +
+                s.substring(1).toLowerCase();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +73,7 @@ public class LogIn extends AppCompatActivity {
                                     // let user login
                                     String msg = username;
                                     Intent sumNav = new Intent(view.getContext(),  SummaryPage.class);
-                                    sumNav.putExtra("msg", msg);
+                                    sumNav.putExtra("msg", toCamelCase(msg));
                                     startActivity(sumNav);
                                 }
                                 else{
