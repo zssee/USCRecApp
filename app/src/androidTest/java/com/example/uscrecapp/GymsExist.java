@@ -68,6 +68,12 @@ public class GymsExist {
                         isDisplayed()));
         materialButton.perform(click());
 
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         ViewInteraction bottomNavigationItemView = onView(
                 allOf(withId(R.id.home), withContentDescription("Home"),
                         childAtPosition(
@@ -77,6 +83,12 @@ public class GymsExist {
                                 1),
                         isDisplayed()));
         bottomNavigationItemView.perform(click());
+
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         ViewInteraction imageButton = onView(
                 allOf(withId(R.id.villageBtn), withContentDescription("Village"),

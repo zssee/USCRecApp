@@ -46,6 +46,12 @@ public class ReturnTest {
                         isDisplayed()));
         appCompatEditText.perform(click());
 
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.userName),
                         childAtPosition(
@@ -66,6 +72,12 @@ public class ReturnTest {
                         isDisplayed()));
         materialButton.perform(click());
 
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         ViewInteraction bottomNavigationItemView = onView(
                 allOf(withId(R.id.home), withContentDescription("Home"),
                         childAtPosition(
@@ -75,6 +87,12 @@ public class ReturnTest {
                                 1),
                         isDisplayed()));
         bottomNavigationItemView.perform(click());
+
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         ViewInteraction appCompatImageButton = onView(
                 allOf(withId(R.id.lyonBtn),
@@ -86,6 +104,12 @@ public class ReturnTest {
                         isDisplayed()));
         appCompatImageButton.perform(click());
 
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         ViewInteraction bottomNavigationItemView2 = onView(
                 allOf(withId(R.id.home), withContentDescription("Home"),
                         childAtPosition(
@@ -95,6 +119,12 @@ public class ReturnTest {
                                 1),
                         isDisplayed()));
         bottomNavigationItemView2.perform(click());
+
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private static Matcher<View> childAtPosition(

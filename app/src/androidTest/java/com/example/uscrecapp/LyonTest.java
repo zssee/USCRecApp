@@ -58,6 +58,12 @@ public class LyonTest {
                         isDisplayed()));
         materialButton.perform(click());
 
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.userName), withText("Tommy Trojarijan"),
                         childAtPosition(
@@ -67,6 +73,12 @@ public class LyonTest {
                                 2),
                         isDisplayed()));
         appCompatEditText2.perform(replaceText("Tommy Trojan"));
+
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         ViewInteraction appCompatEditText3 = onView(
                 allOf(withId(R.id.userName), withText("Tommy Trojan"),
@@ -78,6 +90,12 @@ public class LyonTest {
                         isDisplayed()));
         appCompatEditText3.perform(closeSoftKeyboard());
 
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         ViewInteraction materialButton2 = onView(
                 allOf(withId(R.id.logIn), withText("Log In"),
                         childAtPosition(
@@ -87,6 +105,12 @@ public class LyonTest {
                                 3),
                         isDisplayed()));
         materialButton2.perform(click());
+
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         ViewInteraction bottomNavigationItemView = onView(
                 allOf(withId(R.id.home), withContentDescription("Home"),
@@ -98,6 +122,12 @@ public class LyonTest {
                         isDisplayed()));
         bottomNavigationItemView.perform(click());
 
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         ViewInteraction appCompatImageButton = onView(
                 allOf(withId(R.id.lyonBtn),
                         childAtPosition(
@@ -107,6 +137,12 @@ public class LyonTest {
                                 2),
                         isDisplayed()));
         appCompatImageButton.perform(click());
+
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         ViewInteraction textView = onView(
                 allOf(withId(R.id.gymTitle), withText("Lyon Gym"),

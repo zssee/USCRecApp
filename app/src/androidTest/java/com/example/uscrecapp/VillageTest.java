@@ -58,6 +58,12 @@ public class VillageTest {
                         isDisplayed()));
         materialButton.perform(click());
 
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.userName), withText("Tommy Trojarijan"),
                         childAtPosition(
@@ -88,6 +94,12 @@ public class VillageTest {
                         isDisplayed()));
         materialButton2.perform(click());
 
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         ViewInteraction bottomNavigationItemView = onView(
                 allOf(withId(R.id.home), withContentDescription("Home"),
                         childAtPosition(
@@ -98,6 +110,12 @@ public class VillageTest {
                         isDisplayed()));
         bottomNavigationItemView.perform(click());
 
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         ViewInteraction appCompatImageButton = onView(
                 allOf(withId(R.id.villageBtn),
                         childAtPosition(
@@ -107,6 +125,12 @@ public class VillageTest {
                                 2),
                         isDisplayed()));
         appCompatImageButton.perform(click());
+
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         ViewInteraction textView = onView(
                 allOf(withId(R.id.gymTitle), withText("Village Gym"),
