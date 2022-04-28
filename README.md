@@ -46,3 +46,5 @@ On the gym slots reservation page, we included pop up confirmations for when you
 A new feature we added beyond the scope of the project was notifying the user 10 minutes before their registered gym time slot. A pop-up notification shows up when the time is 10 minutes before their upcoming gym appointment.
 
 Another feature added is viewing time slots for a week (Sunday-Saturday) rather than for three days (Monday-Wednesday). For each gym you can now click on Sunday-Saturday.
+
+In addition, we added a window on the maps page that displays all of the user's upcoming bookings. If there are none, the window is empty. You can click on the window to navigate to the user summary page and view the bookings in more detail. The map is connected to the backend through another firebase connection. 
