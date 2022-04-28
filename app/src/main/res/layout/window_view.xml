@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="0"
+    android:paddingTop="0sp"
+    android:orientation="vertical"
+    android:background="@drawable/window_format">
+
+    <TextView
+        android:id="@+id/gymName"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="9sp"
+        android:text="@string/gym_name"
+        android:textStyle="bold"
+        android:textColor="#040404"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/dateAndTime"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="9sp"
+        android:text="@string/date_and_time"
+        android:textSize="10sp"
+        android:textColor="#000000" />
+
+</LinearLayout>

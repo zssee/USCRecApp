@@ -37,7 +37,7 @@ public class VillageTest {
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void uytgensuTest() {
+    public void villageTest() {
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.userName),
                         childAtPosition(
@@ -46,7 +46,17 @@ public class VillageTest {
                                         0),
                                 2),
                         isDisplayed()));
-        appCompatEditText.perform(replaceText("Tommy Trojarijan"), closeSoftKeyboard());
+        appCompatEditText.perform(click());
+
+        ViewInteraction appCompatEditText2 = onView(
+                allOf(withId(R.id.userName),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                2),
+                        isDisplayed()));
+        appCompatEditText2.perform(replaceText("Syuen See"), closeSoftKeyboard());
 
         ViewInteraction materialButton = onView(
                 allOf(withId(R.id.logIn), withText("Log In"),
@@ -57,37 +67,11 @@ public class VillageTest {
                                 3),
                         isDisplayed()));
         materialButton.perform(click());
-
-        ViewInteraction appCompatEditText2 = onView(
-                allOf(withId(R.id.userName), withText("Tommy Trojarijan"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                2),
-                        isDisplayed()));
-        appCompatEditText2.perform(replaceText("Tommy Trojan"));
-
-        ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.userName), withText("Tommy Trojan"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                2),
-                        isDisplayed()));
-        appCompatEditText3.perform(closeSoftKeyboard());
-
-        ViewInteraction materialButton2 = onView(
-                allOf(withId(R.id.logIn), withText("Log In"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                3),
-                        isDisplayed()));
-        materialButton2.perform(click());
-
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         ViewInteraction bottomNavigationItemView = onView(
                 allOf(withId(R.id.home), withContentDescription("Home"),
                         childAtPosition(
@@ -99,12 +83,12 @@ public class VillageTest {
         bottomNavigationItemView.perform(click());
 
         ViewInteraction appCompatImageButton = onView(
-                allOf(withId(R.id.villageBtn),
+                allOf(withId(R.id.villageBtn), withContentDescription("Village"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                2),
+                                4),
                         isDisplayed()));
         appCompatImageButton.perform(click());
 

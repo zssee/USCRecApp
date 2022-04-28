@@ -28,10 +28,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 public class gymSlots extends AppCompatActivity{
     private static final String TAG = "gymSlots";
@@ -69,7 +67,7 @@ public class gymSlots extends AppCompatActivity{
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
 
-                                Map<String, Object> map = (Map<String, Object>) document.getData();
+                                java.util.Map map = (java.util.Map) document.getData();
                                 String time = (String)map.get("time");
                                 String slot = (String)map.get("slot");
 
@@ -101,7 +99,7 @@ public class gymSlots extends AppCompatActivity{
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(item.getItemId()){
                     case R.id.home:
-                        Intent gymNav = new Intent(gymSlots.this, home.class);
+                        Intent gymNav = new Intent(gymSlots.this, Map.class);
                         startActivity(gymNav);
                         break;
                     case R.id.person:
@@ -135,7 +133,7 @@ public class gymSlots extends AppCompatActivity{
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        Map<String, Object> map = (Map<String, Object>) document.getData();
+                        java.util.Map map = (java.util.Map) document.getData();
                         List<String> signedUp = (List<String>)map.get("signedUp");
                         Long capacity = (Long) map.get("capacity");
                         String time = (String)map.get("time");
@@ -153,7 +151,7 @@ public class gymSlots extends AppCompatActivity{
                         }
 
                         if(day.equals(selectedDay) && gym.toLowerCase(Locale.ROOT).equals(selectedGym.toLowerCase(Locale.ROOT))){
-                            Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                            Log.d(TAG, "DocumentSnapshot data.txt: " + document.getData());
                             if (time.equals("8:00am-10:00am")) {
                                 TextView capacityView = findViewById(R.id.capText8);
                                 if(full){
@@ -316,8 +314,8 @@ public class gymSlots extends AppCompatActivity{
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                                Map<String, Object> map = (Map<String, Object>) document.getData();
+                                Log.d(TAG, "DocumentSnapshot data.txt: " + document.getData());
+                                java.util.Map map = (java.util.Map) document.getData();
                                 List<String> signedUp = (List<String>) map.get("signedUp");
                                 long capacity = (long) map.get("capacity");
                                 if (signedUp.size() < capacity) {
@@ -353,8 +351,8 @@ public class gymSlots extends AppCompatActivity{
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                                Map<String, Object> map = (Map<String, Object>) document.getData();
+                                Log.d(TAG, "DocumentSnapshot data.txt: " + document.getData());
+                                java.util.Map map = (java.util.Map) document.getData();
                                 List<String> signedUp = (List<String>) map.get("signedUp");
                                 long capacity = (long) map.get("capacity");
                                 if (signedUp.size() >= capacity) {
@@ -387,8 +385,8 @@ public class gymSlots extends AppCompatActivity{
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                                Map<String, Object> map = (Map<String, Object>) document.getData();
+                                Log.d(TAG, "DocumentSnapshot data.txt: " + document.getData());
+                                java.util.Map map = (java.util.Map) document.getData();
                                 List<String> signedUp = (List<String>) map.get("signedUp");
                                 long capacity = (long) map.get("capacity");
                                 if (signedUp.size() < capacity) {
@@ -423,8 +421,8 @@ public class gymSlots extends AppCompatActivity{
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                                Map<String, Object> map = (Map<String, Object>) document.getData();
+                                Log.d(TAG, "DocumentSnapshot data.txt: " + document.getData());
+                                java.util.Map map = (java.util.Map) document.getData();
                                 List<String> signedUp = (List<String>) map.get("signedUp");
                                 long capacity = (long) map.get("capacity");
                                 if (signedUp.size() >= capacity) {
@@ -457,8 +455,8 @@ public class gymSlots extends AppCompatActivity{
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                                Map<String, Object> map = (Map<String, Object>) document.getData();
+                                Log.d(TAG, "DocumentSnapshot data.txt: " + document.getData());
+                                java.util.Map map = (java.util.Map) document.getData();
                                 List<String> signedUp = (List<String>) map.get("signedUp");
                                 long capacity = (long) map.get("capacity");
                                 if (signedUp.size() < capacity) {
@@ -493,8 +491,8 @@ public class gymSlots extends AppCompatActivity{
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                                Map<String, Object> map = (Map<String, Object>) document.getData();
+                                Log.d(TAG, "DocumentSnapshot data.txt: " + document.getData());
+                                java.util.Map map = (java.util.Map) document.getData();
                                 List<String> signedUp = (List<String>) map.get("signedUp");
                                 long capacity = (long) map.get("capacity");
                                 if (signedUp.size() >= capacity) {
@@ -526,8 +524,8 @@ public class gymSlots extends AppCompatActivity{
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                                Map<String, Object> map = (Map<String, Object>) document.getData();
+                                Log.d(TAG, "DocumentSnapshot data.txt: " + document.getData());
+                                java.util.Map map = (java.util.Map) document.getData();
                                 List<String> signedUp = (List<String>) map.get("signedUp");
                                 long capacity = (long) map.get("capacity");
                                 if (signedUp.size() < capacity) {
@@ -562,8 +560,8 @@ public class gymSlots extends AppCompatActivity{
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                                Map<String, Object> map = (Map<String, Object>) document.getData();
+                                Log.d(TAG, "DocumentSnapshot data.txt: " + document.getData());
+                                java.util.Map map = (java.util.Map) document.getData();
                                 List<String> signedUp = (List<String>) map.get("signedUp");
                                 long capacity = (long) map.get("capacity");
                                 if (signedUp.size() >= capacity) {
@@ -595,8 +593,8 @@ public class gymSlots extends AppCompatActivity{
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                                Map<String, Object> map = (Map<String, Object>) document.getData();
+                                Log.d(TAG, "DocumentSnapshot data.txt: " + document.getData());
+                                java.util.Map map = (java.util.Map) document.getData();
                                 List<String> signedUp = (List<String>) map.get("signedUp");
                                 long capacity = (long) map.get("capacity");
                                 if (signedUp.size() < capacity) {
@@ -631,8 +629,8 @@ public class gymSlots extends AppCompatActivity{
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                                Map<String, Object> map = (Map<String, Object>) document.getData();
+                                Log.d(TAG, "DocumentSnapshot data.txt: " + document.getData());
+                                java.util.Map map = (java.util.Map) document.getData();
                                 List<String> signedUp = (List<String>) map.get("signedUp");
                                 long capacity = (long) map.get("capacity");
                                 if (signedUp.size() >= capacity) {

@@ -3,22 +3,14 @@ package com.example.uscrecapp;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ScrollView;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,14 +27,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Date;
 
 public class SummaryPage extends AppCompatActivity {
@@ -72,20 +59,24 @@ public class SummaryPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_summary_page);
-
+        String temp = getResources().getString(R.string.student_name);
+        Log.d(TAG, " resources name: " + temp);
+        System.out.print(TAG + " resources name: " + temp);
         singleton = this;
-
 
         Intent intent = getIntent();
         String message = intent.getStringExtra("msg");
-
         // passed a user name
         // find documentPath
         if(message != null){
-            docName = toCamelCase(message);
+            docName = message;
             Log.d(TAG, "docName: " + docName);
+            FileIO file = new FileIO();
+            file.write(docName, this);
+            String tem = file.read(this);
+            Log.d(TAG, "tried to write.");
+            Log.e(TAG, "read: " + tem);
         }
-
 
         // make variables
         TextView studentName = findViewById(R.id.studentName);
@@ -105,11 +96,11 @@ public class SummaryPage extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                        Log.d(TAG, "DocumentSnapshot data.txt: " + document.getData());
 
 
                         // populate user info
-                        Map<String, Object> map = (Map<String, Object>) document.getData();
+                        java.util.Map map = (java.util.Map) document.getData();
                         String name = (String) map.get("name");
                         String id = (String) map.get("id");
                         String imgUrl = (String) map.get("imgUrl");
@@ -140,7 +131,7 @@ public class SummaryPage extends AppCompatActivity {
 
                                             for (QueryDocumentSnapshot docu : task.getResult()) {
                                                 Log.d(TAG, docu.getId() + " =>! " + docu.getData());
-                                                Map<String, Object> map = docu.getData();
+                                                java.util.Map map = docu.getData();
                                                 Timestamp gymTime = (Timestamp) map.get("timestamp");
                                                 Date gymDate = gymTime.toDate();
                                                 Long gTime = gymDate.getTime();
@@ -193,7 +184,8 @@ public class SummaryPage extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(item.getItemId()){
                     case R.id.home:
-                        Intent homeNav = new Intent(SummaryPage.this, home.class);
+                        Intent homeNav = new Intent(SummaryPage.this, Map.class);
+                        homeNav.putExtra("name", docName);
                         startActivity(homeNav);
                         break;
                     case R.id.person:
@@ -225,11 +217,11 @@ public class SummaryPage extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                                Log.d(TAG, "DocumentSnapshot data.txt: " + document.getData());
 
 
                                 // populate user info
-                                Map<String, Object> map = (Map<String, Object>) document.getData();
+                                java.util.Map map = (java.util.Map) document.getData();
 
                                 ArrayList<String> group = (ArrayList<String>) document.get("reservations");
                                 // if group.size() > 0, check if the timestamps for each of the bookings
@@ -249,7 +241,7 @@ public class SummaryPage extends AppCompatActivity {
 
                                                     for (QueryDocumentSnapshot docu : task.getResult()) {
                                                         Log.d(TAG, docu.getId() + " =>! " + docu.getData());
-                                                        Map<String, Object> map = docu.getData();
+                                                        java.util.Map map = docu.getData();
                                                         Timestamp gymTime = (Timestamp) map.get("timestamp");
                                                         Date gymDate = gymTime.toDate();
                                                         Long gTime = gymDate.getTime();
@@ -319,7 +311,7 @@ public class SummaryPage extends AppCompatActivity {
                 }
 
                 if (snapshot != null && snapshot.exists()) {
-                    Log.d(TAG, "Current data: " + snapshot.getData());
+                    Log.d(TAG, "Current data.txt: " + snapshot.getData());
                     ArrayList<String> updatedRes = (ArrayList<String>) snapshot.getData().get("reservations");
                     BookingAdapter adapter = new BookingAdapter(getApplicationContext(), R.layout.upcoming_list_view, updatedRes);
                     ListView listView = (ListView) findViewById(R.id.upcomingList);
@@ -336,7 +328,7 @@ public class SummaryPage extends AppCompatActivity {
 
 
                 } else {
-                    Log.d(TAG, "Current data: null");
+                    Log.d(TAG, "Current data.txt: null");
                 }
             }
         });
