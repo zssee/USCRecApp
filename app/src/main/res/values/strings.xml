@@ -12,9 +12,13 @@
     <string name="previous_bookings">Previous Bookings</string>
     <string name="summary_page">summary page</string>
     <string-array name="days">
+        <item>Sunday</item>
         <item>Monday</item>
         <item>Tuesday</item>
         <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
     </string-array>
     <string name="title_activity_map">map</string>
     <!-- Strings used for fragments for navigation -->

@@ -42,4 +42,7 @@ For the summary page, we implemented a dynamic scrolling view for upcoming booki
 
 On the gym slots reservation page, we included pop up confirmations for when you sign up for a time slot or for when you join the waitlist. There is also a pop up for when you try to sign up for a time slot that is full.
 
+## Additional features added in Project 2.5
+A new feature we added beyond the scope of the project was notifying the user 10 minutes before their registered gym time slot. A pop-up notification shows up when the time is 10 minutes before their upcoming gym appointment.
 
+Another feature added is viewing time slots for a week (Sunday-Saturday) rather than for three days (Monday-Wednesday). For each gym you can now click on Sunday-Saturday.
