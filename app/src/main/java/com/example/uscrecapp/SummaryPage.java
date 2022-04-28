@@ -39,7 +39,7 @@ public class SummaryPage extends AppCompatActivity {
     public static String docName;
     Handler handler = new Handler();
     Runnable runnable;
-    int delay = 10000;
+    int delay = 7500;
     boolean displayed10 = false;
 
     public static SummaryPage singleton;
@@ -201,6 +201,7 @@ public class SummaryPage extends AppCompatActivity {
     // checking for upcoming appointment
     @Override
     protected void onResume() {
+        Date nTime = new Date();
         handler.postDelayed(runnable = new Runnable() {
             public void run() {
                 handler.postDelayed(runnable, delay);
@@ -245,10 +246,12 @@ public class SummaryPage extends AppCompatActivity {
                                                         Timestamp gymTime = (Timestamp) map.get("timestamp");
                                                         Date gymDate = gymTime.toDate();
                                                         Long gTime = gymDate.getTime();
-                                                        Long now = currTime.getTime();
+//                                                        Long now = nTime.getTime();
+                                                        Long now = System.currentTimeMillis();
+                                                        Log.d(TAG, "gTime " + gTime + " now: " + now);
 
                                                         // if timestamp has passed add to previous bookings array
-                                                        if((now - gTime <= 600000) && (!displayed10)){
+                                                        if((gTime - now <= 600000) && (!displayed10)){
                                                             Log.d(TAG, "10 minutes");
 
                                                             Toast.makeText(SummaryPage.this, "You have an upcoming gym appointment in 10 minutes.",
@@ -287,11 +290,11 @@ public class SummaryPage extends AppCompatActivity {
         super.onResume();
     }
 
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        handler.removeCallbacks(runnable); //stop handler when activity not visible super.onPause();
-//    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        handler.removeCallbacks(runnable); //stop handler when activity not visible super.onPause();
+    }
 
     public void printString(){
         System.out.println("Summary page loaded");
